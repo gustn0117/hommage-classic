@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   artists,
   notices,
@@ -17,10 +17,38 @@ const NAV_ITEMS = [
   { id: "contact", label: "CONTACT" },
 ];
 
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    const children = el.querySelectorAll(".reveal");
+    children.forEach((child) => observer.observe(child));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return ref;
+}
+
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openNotice, setOpenNotice] = useState<number | null>(null);
+  const revealRef = useReveal();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -28,7 +56,7 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollTo = (id: string) => {
+  const scrollTo = useCallback((id: string) => {
     setMobileMenuOpen(false);
     const el = document.getElementById(id);
     if (el) {
@@ -36,10 +64,10 @@ export default function Home() {
       const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
       window.scrollTo({ top: id === "home" ? 0 : y, behavior: "smooth" });
     }
-  };
+  }, []);
 
   return (
-    <>
+    <div ref={revealRef}>
       {/* Navigation */}
       <nav className={`nav-fixed ${scrolled ? "nav-scrolled" : ""}`}>
         <div
@@ -58,9 +86,9 @@ export default function Home() {
               border: "none",
               cursor: "pointer",
               color: "var(--color-text-primary)",
-              fontSize: "14px",
-              fontWeight: 600,
-              letterSpacing: "3px",
+              fontSize: "13px",
+              fontWeight: 500,
+              letterSpacing: "4px",
             }}
           >
             MOOD K
@@ -70,7 +98,7 @@ export default function Home() {
           <div
             style={{
               display: "flex",
-              gap: "36px",
+              gap: "40px",
               alignItems: "center",
             }}
             className="desktop-nav"
@@ -79,22 +107,7 @@ export default function Home() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "var(--color-text-secondary)",
-                  fontSize: "12px",
-                  letterSpacing: "2px",
-                  fontWeight: 400,
-                  transition: "color 0.3s",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.color = "var(--color-accent)")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.color = "var(--color-text-secondary)")
-                }
+                className="nav-link"
               >
                 {item.label}
               </button>
@@ -209,13 +222,17 @@ export default function Home() {
         <div className="hero-overlay" />
         <div className="hero-content">
           <h1 className="hero-title">MOOD K</h1>
-          <h2
-            className="hero-title"
-            style={{ fontSize: "clamp(16px, 2.5vw, 28px)", fontWeight: 200 }}
-          >
-            ENTERTAINMENT
-          </h2>
-          <p className="hero-subtitle">{companyInfo.description}</p>
+          <h2 className="hero-subtitle-en">ENTERTAINMENT</h2>
+          <div className="hero-divider" />
+          <p className="hero-description">
+            배우의 가능성을 발굴하고, 진정성 있는 연기로
+            <br />
+            감동을 전하는 매니지먼트 회사입니다.
+            <br />
+            한 사람 한 사람의 개성과 이야기를 존중하며,
+            <br />
+            함께 성장하는 파트너가 되겠습니다.
+          </p>
         </div>
         <div className="scroll-indicator">
           <svg
@@ -245,12 +262,14 @@ export default function Home() {
         style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}
       >
         <div className="section-container">
-          <h2 className="section-title">Artists</h2>
+          <div className="reveal">
+            <h2 className="section-title">Artists</h2>
+          </div>
 
           {artists.map((artist) => (
             <div key={artist.id}>
               {/* Artist Name */}
-              <div style={{ marginBottom: "48px" }}>
+              <div className="reveal" style={{ marginBottom: "56px" }}>
                 <div className="artist-name-en">{artist.nameEn}</div>
                 <div className="artist-name-ko">{artist.nameKo}</div>
               </div>
@@ -258,7 +277,7 @@ export default function Home() {
               {/* Profile Grid */}
               <div className="artist-profile-grid">
                 {/* Main Photo */}
-                <div>
+                <div className="reveal">
                   <div
                     className="artist-main-photo img-placeholder"
                     style={{ borderRadius: "4px" }}
@@ -268,30 +287,23 @@ export default function Home() {
                 </div>
 
                 {/* Info */}
-                <div>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: "24px",
-                      marginBottom: "36px",
-                    }}
-                  >
-                    <div>
+                <div className="reveal reveal-delay-1">
+                  <div className="artist-info-grid">
+                    <div className="artist-info-cell">
                       <div className="artist-info-label">Birth</div>
                       <div className="artist-info-value">
                         {artist.birthDate}
                       </div>
                     </div>
-                    <div>
+                    <div className="artist-info-cell">
                       <div className="artist-info-label">Height</div>
                       <div className="artist-info-value">{artist.height}</div>
                     </div>
-                    <div>
+                    <div className="artist-info-cell">
                       <div className="artist-info-label">Weight</div>
                       <div className="artist-info-value">{artist.weight}</div>
                     </div>
-                    <div>
+                    <div className="artist-info-cell">
                       <div className="artist-info-label">Specialty</div>
                       <div className="artist-info-value">
                         {artist.specialty}
@@ -301,17 +313,7 @@ export default function Home() {
 
                   {/* Filmography */}
                   <div>
-                    <h3
-                      style={{
-                        fontSize: "12px",
-                        letterSpacing: "3px",
-                        color: "var(--color-accent)",
-                        fontWeight: 500,
-                        marginBottom: "8px",
-                      }}
-                    >
-                      FILMOGRAPHY
-                    </h3>
+                    <h3 className="filmography-header">Filmography</h3>
                     <table className="filmography-table">
                       <thead>
                         <tr>
@@ -343,7 +345,7 @@ export default function Home() {
                 {artist.photos.map((_, idx) => (
                   <div
                     key={idx}
-                    className="artist-photo-thumb img-placeholder"
+                    className={`artist-photo-thumb img-placeholder reveal reveal-delay-${Math.min(idx + 1, 3)}`}
                   >
                     PHOTO {idx + 1}
                   </div>
@@ -362,9 +364,11 @@ export default function Home() {
         style={{ padding: "120px 0", background: "var(--color-bg-secondary)" }}
       >
         <div className="section-container">
-          <h2 className="section-title">Notice</h2>
+          <div className="reveal">
+            <h2 className="section-title">Notice</h2>
+          </div>
 
-          <div>
+          <div className="reveal">
             {notices.map((notice) => (
               <div
                 key={notice.id}
@@ -375,6 +379,15 @@ export default function Home() {
               >
                 <div className="notice-date">{notice.date}</div>
                 <div className="notice-title-text">{notice.title}</div>
+                <svg
+                  className={`notice-chevron ${openNotice === notice.id ? "open" : ""}`}
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <path d="M4 6l4 4 4-4" />
+                </svg>
                 <div
                   className={`notice-content ${openNotice === notice.id ? "open" : ""}`}
                 >
@@ -394,25 +407,32 @@ export default function Home() {
         style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}
       >
         <div className="section-container">
-          <h2 className="section-title">Audition</h2>
+          <div className="reveal">
+            <h2 className="section-title">Audition</h2>
+          </div>
 
           <div className="audition-grid">
             {/* Online */}
-            <div className="audition-card">
+            <div className="audition-card reveal">
               <h3 className="audition-card-title">
                 {auditionInfo.online.title}
               </h3>
               <p className="audition-card-desc">
                 {auditionInfo.online.description}
               </p>
-              <div
-                style={{
-                  marginTop: "20px",
-                  fontSize: "14px",
-                  color: "var(--color-accent)",
-                }}
-              >
-                ✉ {auditionInfo.online.email}
+              <div className="audition-email">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="M22 4L12 13 2 4" />
+                </svg>
+                {auditionInfo.online.email}
               </div>
               <ul className="audition-req-list">
                 {auditionInfo.online.requirements.map((req, idx) => (
@@ -422,7 +442,7 @@ export default function Home() {
             </div>
 
             {/* Offline */}
-            <div className="audition-card">
+            <div className="audition-card reveal reveal-delay-1">
               <h3 className="audition-card-title">
                 {auditionInfo.offline.title}
               </h3>
@@ -431,9 +451,10 @@ export default function Home() {
               </p>
               <p
                 style={{
-                  marginTop: "20px",
+                  marginTop: "24px",
                   fontSize: "13px",
                   color: "var(--color-accent)",
+                  fontStyle: "italic",
                 }}
               >
                 {auditionInfo.offline.note}
@@ -451,10 +472,12 @@ export default function Home() {
         style={{ padding: "120px 0", background: "var(--color-bg-secondary)" }}
       >
         <div className="section-container">
-          <h2 className="section-title">Contact</h2>
+          <div className="reveal">
+            <h2 className="section-title">Contact</h2>
+          </div>
 
           <div className="contact-grid">
-            <div>
+            <div className="reveal">
               <div className="contact-info-item">
                 <div className="contact-info-label">Company</div>
                 <div className="contact-info-value">
@@ -468,7 +491,7 @@ export default function Home() {
                   style={{
                     fontSize: "13px",
                     color: "var(--color-text-muted)",
-                    marginTop: "2px",
+                    marginTop: "4px",
                   }}
                 >
                   {companyInfo.addressDetail}
@@ -490,8 +513,10 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="contact-map-placeholder">
-              지도 영역 (추후 Google Maps 삽입)
+            <div className="reveal reveal-delay-1">
+              <div className="contact-map-placeholder">
+                지도 영역 (추후 Google Maps 삽입)
+              </div>
             </div>
           </div>
         </div>
@@ -501,27 +526,10 @@ export default function Home() {
       <footer className="footer">
         <div className="section-container">
           <p className="footer-text">
-            © 2026 {companyInfo.name}. All Rights Reserved.
+            &copy; 2026 {companyInfo.name}. All Rights Reserved.
           </p>
         </div>
       </footer>
-
-      {/* Responsive styles */}
-      <style jsx global>{`
-        @media (max-width: 768px) {
-          .desktop-nav {
-            display: none !important;
-          }
-          .mobile-hamburger {
-            display: flex !important;
-          }
-        }
-        @media (min-width: 769px) {
-          .mobile-hamburger {
-            display: none !important;
-          }
-        }
-      `}</style>
-    </>
+    </div>
   );
 }
