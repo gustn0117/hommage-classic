@@ -39,6 +39,8 @@ const NAV_ITEMS = [
   { id: "contact", label: "CONTACT" },
 ];
 
+const SECTION_IDS = ["home", "artists", "notice", "audition", "contact"];
+
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -57,7 +59,8 @@ function useReveal() {
       { threshold: 0.15 }
     );
 
-    const children = el.querySelectorAll(".reveal");
+    const revealSelectors = ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur";
+    const children = el.querySelectorAll(revealSelectors);
     children.forEach((child) => observer.observe(child));
 
     return () => observer.disconnect();
@@ -66,11 +69,38 @@ function useReveal() {
   return ref;
 }
 
+function useScrollSpy() {
+  const [activeSection, setActiveSection] = useState("home");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: "-80px 0px -40% 0px" }
+    );
+
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return activeSection;
+}
+
 export default function HomeClient({ artists, notices, companyInfo, auditionInfo, heroVideo }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openNotice, setOpenNotice] = useState<number | null>(null);
   const revealRef = useReveal();
+  const activeSection = useScrollSpy();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -92,70 +122,53 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
     <div ref={revealRef}>
       {/* Navigation */}
       <nav className={`nav-fixed ${scrolled ? "nav-scrolled" : ""}`}>
-        <div
-          className="section-container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: "72px",
-          }}
-        >
-          <button
-            onClick={() => scrollTo("home")}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "var(--color-text-primary)",
-              fontSize: "13px",
-              fontWeight: 500,
-              letterSpacing: "4px",
-            }}
-          >
-            MOOD K
-          </button>
+        <div className="section-container">
+          <div className="nav-inner">
+            <button onClick={() => scrollTo("home")} className="nav-logo">
+              MOOD K
+            </button>
 
-          <div
-            style={{ display: "flex", gap: "40px", alignItems: "center" }}
-            className="desktop-nav"
-          >
-            {NAV_ITEMS.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="nav-link"
-              >
-                {item.label}
-              </button>
-            ))}
+            <div
+              style={{ display: "flex", gap: "40px", alignItems: "center" }}
+              className="desktop-nav"
+            >
+              {NAV_ITEMS.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollTo(item.id)}
+                  className={`nav-link ${activeSection === item.id ? "nav-active" : ""}`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            <button
+              className="mobile-hamburger"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                display: "none",
+                flexDirection: "column",
+                gap: "5px",
+                padding: "8px",
+              }}
+            >
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  style={{
+                    width: "20px",
+                    height: "1px",
+                    background: "var(--color-text-secondary)",
+                    display: "block",
+                  }}
+                />
+              ))}
+            </button>
           </div>
-
-          <button
-            className="mobile-hamburger"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              display: "none",
-              flexDirection: "column",
-              gap: "5px",
-              padding: "8px",
-            }}
-          >
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                style={{
-                  width: "20px",
-                  height: "1px",
-                  background: "var(--color-text-secondary)",
-                  display: "block",
-                }}
-              />
-            ))}
-          </button>
         </div>
       </nav>
 
@@ -235,9 +248,9 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
       </section>
 
       {/* Artists Section */}
-      <section id="artists" style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
+      <section id="artists" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
-          <div className="reveal">
+          <div className="reveal-blur">
             <div className="section-title-wrap">
               <span className="section-number">01</span>
               <h2 className="section-title">Artists</h2>
@@ -247,7 +260,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
 
           {artists.map((artist) => (
             <div key={artist.id} className="artist-block">
-              <div className="reveal">
+              <div className="reveal-left">
                 <div className="artist-name-wrap">
                   <div className="artist-name-en">{artist.name_en}</div>
                   <div className="artist-name-ko">{artist.name_ko}</div>
@@ -255,7 +268,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
               </div>
 
               <div className="artist-profile-grid">
-                <div className="reveal">
+                <div className="reveal-scale">
                   {artist.profile_image ? (
                     <img
                       className="artist-main-photo"
@@ -269,7 +282,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
                   )}
                 </div>
 
-                <div className="reveal reveal-delay-1">
+                <div className="reveal-right reveal-delay-1">
                   <div className="artist-info-grid">
                     <div className="artist-info-cell">
                       <div className="artist-info-label">Birth</div>
@@ -318,7 +331,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
               {artist.photos.length > 0 && (
                 <div className="artist-photo-grid">
                   {artist.photos.map((url, idx) => (
-                    <div key={idx} className={`artist-photo-thumb reveal reveal-delay-${Math.min(idx + 1, 3)}`}>
+                    <div key={idx} className={`artist-photo-thumb reveal-scale reveal-delay-${Math.min(idx + 1, 3)}`}>
                       <img src={url} alt={`${artist.name_ko} photo ${idx + 1}`} />
                     </div>
                   ))}
@@ -332,9 +345,9 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
       <div className="section-divider" />
 
       {/* Notice Section */}
-      <section id="notice" style={{ padding: "120px 0", background: "var(--color-bg-secondary)" }}>
+      <section id="notice" style={{ padding: "140px 0", background: "var(--color-bg-secondary)" }}>
         <div className="section-container">
-          <div className="reveal">
+          <div className="reveal-blur">
             <div className="section-title-wrap">
               <span className="section-number">02</span>
               <h2 className="section-title">Notice</h2>
@@ -372,9 +385,9 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
       <div className="section-divider" />
 
       {/* Audition Section */}
-      <section id="audition" style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
+      <section id="audition" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
-          <div className="reveal">
+          <div className="reveal-blur">
             <div className="section-title-wrap">
               <span className="section-number">03</span>
               <h2 className="section-title">Audition</h2>
@@ -383,7 +396,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
           </div>
 
           <div className="audition-grid">
-            <div className="audition-card reveal">
+            <div className="audition-card reveal-left">
               <h3 className="audition-card-title">{auditionInfo.online.title}</h3>
               <p className="audition-card-desc">{auditionInfo.online.description}</p>
               <div className="audition-email">
@@ -400,7 +413,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
               </ul>
             </div>
 
-            <div className="audition-card reveal reveal-delay-1">
+            <div className="audition-card reveal-right reveal-delay-1">
               <h3 className="audition-card-title">{auditionInfo.offline.title}</h3>
               <p className="audition-card-desc">{auditionInfo.offline.description}</p>
               <p style={{ marginTop: "24px", fontSize: "13px", color: "var(--color-accent)", fontStyle: "italic" }}>
@@ -414,9 +427,9 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
       <div className="section-divider" />
 
       {/* Contact Section */}
-      <section id="contact" style={{ padding: "120px 0", background: "var(--color-bg-secondary)" }}>
+      <section id="contact" style={{ padding: "140px 0", background: "var(--color-bg-secondary)" }}>
         <div className="section-container">
-          <div className="reveal">
+          <div className="reveal-blur">
             <div className="section-title-wrap">
               <span className="section-number">04</span>
               <h2 className="section-title">Contact</h2>
@@ -425,7 +438,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
           </div>
 
           <div className="contact-grid">
-            <div className="reveal">
+            <div className="reveal-left">
               <div className="contact-info-item">
                 <div className="contact-info-label">Company</div>
                 <div className="contact-info-value">{companyInfo.nameKo}</div>
@@ -453,7 +466,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
               </div>
             </div>
 
-            <div className="reveal reveal-delay-1">
+            <div className="reveal-right reveal-delay-1">
               <div className="contact-map-placeholder">
                 지도 영역 (추후 Google Maps 삽입)
               </div>
