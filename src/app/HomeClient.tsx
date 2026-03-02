@@ -384,52 +384,80 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
             </div>
           </div>
 
-          <div className="audition-layout">
-            {/* Online Audition */}
-            <div className="audition-primary reveal">
-              <div className="audition-primary-header">
-                <span className="audition-type-label">Online</span>
-                <h3 className="audition-primary-title">{auditionInfo.online.title}</h3>
-              </div>
-              <p className="audition-primary-desc">{auditionInfo.online.description}</p>
+          {/* Intro */}
+          <div className="audition-intro reveal">
+            <p className="audition-intro-text">
+              MOOD K ENTERTAINMENT는
+              <br />
+              아티스트의 현재보다 앞으로의 여정을 더 중요하게 생각합니다.
+            </p>
+            <p className="audition-intro-text audition-intro-sub">
+              우리는 가능성을 서두르지 않습니다.
+              <br />
+              한 사람의 방향과 시간을 충분히 바라본 후, 신중하게 결정합니다.
+            </p>
+          </div>
 
-              <a href={`mailto:${auditionInfo.online.email}`} className="audition-email-block reveal-scale reveal-delay-1">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                  <path d="M22 4L12 13 2 4" />
-                </svg>
-                <span>{auditionInfo.online.email}</span>
-              </a>
-
-              <div className="audition-req-section reveal reveal-delay-2">
-                <div className="audition-req-title">제출 항목</div>
-                <div className="audition-req-items">
-                  {auditionInfo.online.requirements.map((req, idx) => (
-                    <div key={idx} className="audition-req-item">
-                      <span className="audition-req-num">{String(idx + 1).padStart(2, "0")}</span>
-                      <span>{req}</span>
-                    </div>
-                  ))}
+          {/* Process */}
+          <div className="audition-section-block reveal reveal-delay-1">
+            <h3 className="audition-block-title">오디션 진행 절차</h3>
+            <div className="audition-process">
+              {["서류 접수", "1차 서류 검토", "2차 영상 심사", "3차 대면 심사", "최종 협의"].map((step, idx) => (
+                <div key={idx} className="audition-step">
+                  <span className="audition-step-num">{String(idx + 1).padStart(2, "0")}</span>
+                  <span className="audition-step-text">{step}</span>
+                  {idx < 4 && (
+                    <svg className="audition-step-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  )}
                 </div>
+              ))}
+            </div>
+            <p className="audition-step-note">※ 각 단계는 내부 기준에 따라 개별 안내됩니다.</p>
+          </div>
+
+          {/* How to Apply */}
+          <div className="audition-section-block reveal reveal-delay-2">
+            <h3 className="audition-block-title">오디션 지원 방법</h3>
+
+            <div className="audition-apply-grid">
+              <div className="audition-apply-card">
+                <div className="audition-apply-label">제출 자료</div>
+                <ul className="audition-apply-list">
+                  <li>일반 사진 (정면 및 측면 각 1장)</li>
+                  <li>1분 이내 자기소개 영상</li>
+                  <li>프로필 PDF 1부 또는 연기 영상 (경력자 해당)</li>
+                  <li>활동 경력 사항 (경력자 해당)</li>
+                </ul>
+              </div>
+
+              <div className="audition-apply-card">
+                <div className="audition-apply-label">접수 방법</div>
+                <ol className="audition-apply-steps">
+                  <li>위 자료를 이메일로 제출</li>
+                  <li>이메일 제목: <strong>MOOD K AUDITION / 이름 / 출생연도</strong></li>
+                  <li>서류 검토 후, 합격자에 한해 2주 이내 개별 연락드립니다.</li>
+                </ol>
               </div>
             </div>
 
-            {/* Offline Audition */}
-            <div className="audition-secondary reveal reveal-delay-1">
-              <div className="audition-secondary-inner">
-                <span className="audition-type-label">Offline</span>
-                <h3 className="audition-secondary-title">{auditionInfo.offline.title}</h3>
-                <p className="audition-secondary-desc">{auditionInfo.offline.description}</p>
-                <div className="audition-notice">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="16" x2="12" y2="12" />
-                    <line x1="12" y1="8" x2="12.01" y2="8" />
-                  </svg>
-                  <span>{auditionInfo.offline.note}</span>
-                </div>
-              </div>
-            </div>
+            <a href={`mailto:${auditionInfo.online.email}`} className="audition-email-block reveal-scale">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M22 4L12 13 2 4" />
+              </svg>
+              <span>{auditionInfo.online.email}</span>
+            </a>
+          </div>
+
+          {/* Privacy Note */}
+          <div className="audition-privacy reveal reveal-delay-3">
+            <p>
+              제출된 모든 자료는 신중히 검토되며, 오디션 심사 목적 외 사용되지 않습니다.
+              <br />
+              심사 종료 후 안전하게 관리됩니다.
+            </p>
           </div>
         </div>
       </section>
@@ -461,10 +489,6 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
                     {companyInfo.addressDetail}
                   </div>
                 </div>
-              </div>
-              <div className="contact-info-item">
-                <div className="contact-info-label">Phone</div>
-                <div className="contact-info-value">{companyInfo.phone}</div>
               </div>
               <div className="contact-info-item">
                 <div className="contact-info-label">Email</div>
