@@ -376,13 +376,55 @@ body {
   transform: translateX(-50%);
   z-index: 3;
   opacity: 0;
-  animation: scrollFadeIn 1s 2s forwards, scrollBounce 3s 3s ease-in-out infinite;
+  animation: scrollFadeIn 1s 2s forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--color-text-muted);
+  transition: opacity 0.4s;
 }
 
-@keyframes scrollFadeIn { to { opacity: 0.4; } }
-@keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-10px); }
+.scroll-indicator:hover {
+  opacity: 0.8 !important;
+}
+
+.scroll-indicator-text {
+  font-size: 8px;
+  letter-spacing: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.scroll-indicator-line {
+  display: block;
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(to bottom, var(--color-text-muted), transparent);
+  opacity: 0.4;
+  animation: scrollLineGrow 1.5s 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+@keyframes scrollLineGrow {
+  to { transform: scaleY(1); }
+}
+
+.scroll-indicator-arrow {
+  opacity: 0.5;
+  animation: scrollArrowBounce 2.5s 3s ease-in-out infinite;
+}
+
+@keyframes scrollFadeIn { to { opacity: 0.5; } }
+
+@keyframes scrollArrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
 }
 
 /* ========================================

@@ -238,14 +238,13 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
             지속 가능한 활동을 관리합니다.
           </p>
         </div>
-        <div className="scroll-indicator">
-          <svg width="20" height="30" viewBox="0 0 20 30" fill="none" stroke="var(--color-text-muted)" strokeWidth="1.5">
-            <rect x="1" y="1" width="18" height="28" rx="9" />
-            <line x1="10" y1="6" x2="10" y2="12">
-              <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite" />
-            </line>
+        <button className="scroll-indicator" onClick={() => scrollTo("artists")} aria-label="Scroll down">
+          <span className="scroll-indicator-text">SCROLL</span>
+          <span className="scroll-indicator-line" />
+          <svg className="scroll-indicator-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M6 9l6 6 6-6" />
           </svg>
-        </div>
+        </button>
       </section>
 
       {/* Artists Section */}
