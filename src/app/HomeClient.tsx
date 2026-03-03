@@ -206,21 +206,14 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
 
       {/* Hero Section */}
       <section id="home" className="hero-section">
-        {heroVideo.url ? (
-          heroVideo.type === "youtube" ? (
-            <iframe
-              className="hero-video"
-              src={`${heroVideo.url}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0`}
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              style={{ border: "none", pointerEvents: "none" }}
-            />
-          ) : (
-            <video className="hero-video" autoPlay muted loop playsInline src={heroVideo.url} />
-          )
-        ) : (
-          <div className="hero-video hero-gradient-bg" />
-        )}
+        <video
+          className="hero-video hero-video-bg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          src="/샘플2.mp4"
+        />
         <div className="hero-bg-grain" />
         <div className="hero-overlay" />
         <div className="hero-content">
