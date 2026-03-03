@@ -241,7 +241,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
         <div className="hero-overlay" />
         <div className="hero-content">
           <h1 className="hero-title">MOOD K ENTERTAINMENT</h1>
-          <p className="hero-tagline">Management with Intention.</p>
+          <p className="hero-tagline">Management with Intention</p>
           <div className="hero-divider" />
           <p className="hero-description">
             MOOD K ENTERTAINMENT는
@@ -307,7 +307,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
                   </div>
 
                   <div>
-                    <h3 className="filmography-header">Filmography</h3>
+                    <h3 className="filmography-header">Works</h3>
                     <table className="filmography-table">
                       <thead>
                         <tr>
