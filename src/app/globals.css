@@ -662,12 +662,15 @@ body {
   padding: 16px 8px;
   border-bottom: 1px solid var(--color-border);
   transition: color 0.3s;
-  position: relative;
 }
 
 .filmography-table tr { transition: background 0.3s; }
 
-.filmography-table tbody tr::before {
+.filmography-table tbody td:first-child {
+  position: relative;
+}
+
+.filmography-table tbody td:first-child::before {
   content: "";
   position: absolute;
   left: 0;
@@ -678,7 +681,7 @@ body {
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.filmography-table tbody tr:hover::before { width: 2px; }
+.filmography-table tbody tr:hover td:first-child::before { width: 2px; }
 .filmography-table tbody tr:hover { background: rgba(212, 180, 133, 0.04); }
 .filmography-table tbody tr:hover td {
   color: var(--color-text-primary);
