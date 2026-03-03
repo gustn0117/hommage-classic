@@ -397,27 +397,8 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
             </p>
           </div>
 
-          {/* Process */}
-          <div className="audition-section-block reveal reveal-delay-1">
-            <h3 className="audition-block-title">오디션 진행 절차</h3>
-            <div className="audition-process">
-              {["서류 접수", "1차 서류 검토", "2차 영상 심사", "3차 대면 심사", "최종 협의"].map((step, idx) => (
-                <div key={idx} className="audition-step">
-                  <span className="audition-step-num">{String(idx + 1).padStart(2, "0")}</span>
-                  <span className="audition-step-text">{step}</span>
-                  {idx < 4 && (
-                    <svg className="audition-step-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M5 12h14M13 6l6 6-6 6" />
-                    </svg>
-                  )}
-                </div>
-              ))}
-            </div>
-            <p className="audition-step-note">※ 각 단계는 내부 기준에 따라 개별 안내됩니다.</p>
-          </div>
-
           {/* How to Apply */}
-          <div className="audition-section-block reveal reveal-delay-2">
+          <div className="audition-section-block reveal reveal-delay-1">
             <h3 className="audition-block-title">오디션 지원 방법</h3>
 
             <div className="audition-apply-grid">
@@ -451,7 +432,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
           </div>
 
           {/* Privacy Note */}
-          <div className="audition-privacy reveal reveal-delay-3">
+          <div className="audition-privacy reveal reveal-delay-2">
             <p>
               제출된 모든 자료는 신중히 검토되며, 오디션 심사 목적 외 사용되지 않습니다.
               <br />
