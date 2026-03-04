@@ -240,18 +240,22 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
         <div className="hero-bg-grain" />
         <div className="hero-overlay" />
         <div className="hero-content">
-          <h1 className="hero-title">MOOD K<br />ENTERTAINMENT</h1>
+          <h1 className="hero-title">
+            <span className="hero-title-main">MOOD K</span>
+            <br />
+            <span className="hero-title-sub">ENTERTAINMENT</span>
+          </h1>
           <p className="hero-tagline">Management with Intention</p>
           <div className="hero-divider" />
           <p className="hero-description">
-            MOOD K ENTERTAINMENT는
+            MOOD K,
             <br />
-            배우의 장기적 커리어를 설계합니다.
+            배우의 장기적 커리어를 설계합니다
           </p>
           <p className="hero-description hero-description-sub">
             작품 선택과 이미지 방향성을 기반으로
             <br />
-            지속 가능한 활동을 관리합니다.
+            지속 가능한 활동을 관리합니다
           </p>
         </div>
         <button className="scroll-indicator" onClick={() => scrollTo("artists")} aria-label="Scroll down">
