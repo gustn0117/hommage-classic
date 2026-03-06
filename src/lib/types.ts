@@ -65,3 +65,9 @@ export interface HeroVideo {
   url: string;
   fallbackText: string;
 }
+
+export interface SnsLinks {
+  instagram: string;
+  x: string;
+  youtube: string;
+}

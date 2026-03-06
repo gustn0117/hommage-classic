@@ -1,6 +1,6 @@
 import { createPublicClient } from "@/lib/supabase";
 import HomeClient from "./HomeClient";
-import type { AuditionInfo, HeroVideo } from "@/lib/types";
+import type { AuditionInfo, HeroVideo, SnsLinks } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +34,14 @@ function normalizeHeroVideo(raw: any): HeroVideo {
     fallbackText: "MOOD K ENTERTAINMENT",
   };
 }
+
+function normalizeSnsLinks(raw: any): SnsLinks {
+  return {
+    instagram: raw?.instagram || "",
+    x: raw?.x || "",
+    youtube: raw?.youtube || "",
+  };
+}
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export default async function Home() {
@@ -46,6 +54,7 @@ export default async function Home() {
     { data: companyInfoRow },
     { data: auditionInfoRow },
     { data: heroVideoRow },
+    { data: snsLinksRow },
   ] = await Promise.all([
     supabase.from("artists").select("*").order("sort_order", { ascending: true }),
     supabase.from("filmography").select("*").order("sort_order", { ascending: true }),
@@ -53,6 +62,7 @@ export default async function Home() {
     supabase.from("site_settings").select("value").eq("key", "company_info").single(),
     supabase.from("site_settings").select("value").eq("key", "audition_info").single(),
     supabase.from("site_settings").select("value").eq("key", "hero_video").single(),
+    supabase.from("site_settings").select("value").eq("key", "sns_links").single(),
   ]);
 
   const artistsWithFilmo = (artists || []).map((artist) => ({
@@ -67,6 +77,7 @@ export default async function Home() {
       companyInfo={companyInfoRow?.value as never}
       auditionInfo={normalizeAudition(auditionInfoRow?.value)}
       heroVideo={normalizeHeroVideo(heroVideoRow?.value)}
+      snsLinks={normalizeSnsLinks(snsLinksRow?.value)}
     />
   );
 }

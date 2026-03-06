@@ -1136,6 +1136,26 @@ body {
   margin: 0 auto 28px;
 }
 
+.footer-sns {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.footer-sns-link {
+  color: var(--color-text-muted);
+  transition: color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-sns-link:hover {
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
 .footer-text {
   font-size: 10px;
   color: var(--color-text-muted);

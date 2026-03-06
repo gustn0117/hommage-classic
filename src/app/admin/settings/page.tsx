@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import AdminShell from "../AdminShell";
-import type { CompanyInfo, AuditionInfo, HeroVideo } from "@/lib/types";
+import type { CompanyInfo, AuditionInfo, HeroVideo, SnsLinks } from "@/lib/types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function normalizeAudition(raw: any): AuditionInfo {
@@ -31,6 +31,7 @@ export default function SettingsPage() {
   const [company, setCompany] = useState<CompanyInfo | null>(null);
   const [audition, setAudition] = useState<AuditionInfo | null>(null);
   const [hero, setHero] = useState<HeroVideo | null>(null);
+  const [sns, setSns] = useState<SnsLinks | null>(null);
   const [toast, setToast] = useState("");
   const [saving, setSaving] = useState("");
 
@@ -43,6 +44,9 @@ export default function SettingsPage() {
     fetch("/api/settings/company_info").then((r) => r.json()).then(setCompany);
     fetch("/api/settings/audition_info").then((r) => r.json()).then((data) => setAudition(normalizeAudition(data)));
     fetch("/api/settings/hero_video").then((r) => r.json()).then(setHero);
+    fetch("/api/settings/sns_links").then((r) => r.json()).then((data) =>
+      setSns({ instagram: data?.instagram || "", x: data?.x || "", youtube: data?.youtube || "" })
+    );
   }, []);
 
   const saveSection = async (key: string, data: unknown) => {
@@ -56,7 +60,7 @@ export default function SettingsPage() {
     showToast("저장되었습니다");
   };
 
-  if (!company || !audition || !hero) {
+  if (!company || !audition || !hero || !sns) {
     return <AdminShell><p>로딩 중...</p></AdminShell>;
   }
 
@@ -100,6 +104,52 @@ export default function SettingsPage() {
         </div>
         <p style={{ fontSize: "12px", color: "var(--color-text-muted)", marginTop: "4px" }}>
           비워두면 그라데이션 배경이 표시됩니다. YouTube는 embed URL을 사용하세요.
+        </p>
+      </div>
+
+      {/* SNS Links */}
+      <div className="admin-card">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+          <div className="admin-card-header" style={{ marginBottom: 0 }}>SNS Links</div>
+          <button
+            className="admin-btn admin-btn-primary admin-btn-sm"
+            onClick={() => saveSection("sns_links", sns)}
+            disabled={saving === "sns_links"}
+          >
+            {saving === "sns_links" ? "저장 중..." : "저장"}
+          </button>
+        </div>
+        <div className="admin-form-grid">
+          <div className="admin-form-group">
+            <label className="admin-label">Instagram URL</label>
+            <input
+              className="admin-input"
+              placeholder="https://www.instagram.com/..."
+              value={sns.instagram}
+              onChange={(e) => setSns({ ...sns, instagram: e.target.value })}
+            />
+          </div>
+          <div className="admin-form-group">
+            <label className="admin-label">X (Twitter) URL</label>
+            <input
+              className="admin-input"
+              placeholder="https://x.com/..."
+              value={sns.x}
+              onChange={(e) => setSns({ ...sns, x: e.target.value })}
+            />
+          </div>
+          <div className="admin-form-group">
+            <label className="admin-label">YouTube URL</label>
+            <input
+              className="admin-input"
+              placeholder="https://www.youtube.com/@..."
+              value={sns.youtube}
+              onChange={(e) => setSns({ ...sns, youtube: e.target.value })}
+            />
+          </div>
+        </div>
+        <p style={{ fontSize: "12px", color: "var(--color-text-muted)", marginTop: "4px" }}>
+          비워두면 해당 SNS 아이콘이 사이트에 표시되지 않습니다.
         </p>
       </div>
 
