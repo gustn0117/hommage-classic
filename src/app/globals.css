@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-primary: #1c1816;
-  --color-bg-secondary: #242019;
-  --color-bg-card: #2e2820;
-  --color-bg-accent: #3d3428;
-  --color-text-primary: #f2ece4;
-  --color-text-secondary: #c8b9a8;
-  --color-text-muted: #8e7f6f;
-  --color-accent: #d4b485;
-  --color-accent-hover: #e2c79e;
-  --color-border: #3a3128;
-  --color-border-light: #4d4236;
+  --color-bg-primary: #1a2e24;
+  --color-bg-secondary: #1f3a2d;
+  --color-bg-card: #264636;
+  --color-bg-accent: #2f5443;
+  --color-text-primary: #f0ebe3;
+  --color-text-secondary: #c0b8a8;
+  --color-text-muted: #7a8f80;
+  --color-accent: #c9a96e;
+  --color-accent-hover: #dbbf88;
+  --color-border: #2c4a3a;
+  --color-border-light: #3a5e4c;
 }
 
 * {
@@ -35,7 +35,7 @@ body {
 }
 
 ::selection {
-  background: rgba(212, 180, 133, 0.3);
+  background: rgba(201, 169, 110, 0.3);
   color: var(--color-text-primary);
 }
 
@@ -51,7 +51,7 @@ body {
 
 /* Focus ring for accessibility */
 :focus-visible {
-  outline: 2px solid rgba(212, 180, 133, 0.5);
+  outline: 2px solid rgba(201, 169, 110, 0.5);
   outline-offset: 2px;
 }
 
@@ -119,10 +119,10 @@ body {
 }
 
 .nav-scrolled {
-  background-color: rgba(28, 24, 22, 0.92);
+  background-color: rgba(26, 46, 36, 0.92);
   backdrop-filter: blur(30px) saturate(1.3);
   -webkit-backdrop-filter: blur(30px) saturate(1.3);
-  border-bottom: 1px solid rgba(212, 180, 133, 0.08);
+  border-bottom: 1px solid rgba(201, 169, 110, 0.08);
 }
 
 .nav-inner {
@@ -207,7 +207,7 @@ body {
 
 .section-number {
   font-size: 11px;
-  color: rgba(212, 180, 133, 0.3);
+  color: rgba(201, 169, 110, 0.3);
   letter-spacing: 4px;
   font-weight: 300;
   display: block;
@@ -231,7 +231,7 @@ body {
   left: 0;
   top: 0;
   color: transparent;
-  -webkit-text-stroke: 0.5px rgba(212, 180, 133, 0.06);
+  -webkit-text-stroke: 0.5px rgba(201, 169, 110, 0.06);
   pointer-events: none;
 }
 
@@ -271,8 +271,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(28, 24, 22, 0.15) 0%, rgba(28, 24, 22, 0.5) 60%),
-    linear-gradient(to bottom, rgba(28, 24, 22, 0.1) 0%, rgba(28, 24, 22, 0.4) 50%, rgba(28, 24, 22, 0.95) 100%);
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26, 46, 36, 0.15) 0%, rgba(26, 46, 36, 0.5) 60%),
+    linear-gradient(to bottom, rgba(26, 46, 36, 0.1) 0%, rgba(26, 46, 36, 0.4) 50%, rgba(26, 46, 36, 0.95) 100%);
   z-index: 2;
 }
 
@@ -303,7 +303,7 @@ body {
   color: var(--color-text-primary);
   line-height: 1.2;
   text-shadow:
-    0 0 80px rgba(212, 180, 133, 0.12),
+    0 0 80px rgba(201, 169, 110, 0.12),
     0 2px 40px rgba(0, 0, 0, 0.25);
 }
 
@@ -402,9 +402,9 @@ body {
 
 .hero-gradient-bg {
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(80, 55, 30, 0.35) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 80%, rgba(55, 40, 20, 0.25) 0%, transparent 50%),
-    linear-gradient(135deg, #1c1816 0%, #262018 30%, #322820 60%, #1c1816 100%);
+    radial-gradient(ellipse at 30% 20%, rgba(42, 80, 58, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(30, 60, 42, 0.25) 0%, transparent 50%),
+    linear-gradient(135deg, #1a2e24 0%, #1f3a2d 30%, #264636 60%, #1a2e24 100%);
   animation: ambientShift 15s ease-in-out infinite;
 }
 
@@ -539,13 +539,13 @@ body {
   object-fit: cover;
   border-radius: 8px;
   background: var(--color-bg-card);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(212, 180, 133, 0.04);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(201, 169, 110, 0.04);
   transition: box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
               filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .product-main-photo:hover {
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.35), 0 0 60px rgba(212, 180, 133, 0.08);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.35), 0 0 60px rgba(201, 169, 110, 0.08);
   filter: brightness(1.05);
 }
 
@@ -560,7 +560,7 @@ body {
 }
 
 .product-info-cell:hover {
-  background: rgba(212, 180, 133, 0.03);
+  background: rgba(201, 169, 110, 0.03);
   padding-left: 4px;
 }
 
@@ -614,7 +614,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(28, 24, 22, 0.35) 0%, rgba(28, 24, 22, 0.08) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(26, 46, 36, 0.35) 0%, rgba(26, 46, 36, 0.08) 50%, transparent 100%);
   transition: opacity 0.5s;
   z-index: 1;
 }
@@ -744,7 +744,7 @@ body {
 }
 
 .product-detail-table tbody tr:hover td:first-child::before { width: 2px; }
-.product-detail-table tbody tr:hover { background: rgba(212, 180, 133, 0.04); }
+.product-detail-table tbody tr:hover { background: rgba(201, 169, 110, 0.04); }
 .product-detail-table tbody tr:hover td {
   color: var(--color-text-primary);
 }
@@ -780,7 +780,7 @@ body {
 
 .notice-item:hover {
   padding-left: 16px;
-  background: rgba(212, 180, 133, 0.03);
+  background: rgba(201, 169, 110, 0.03);
 }
 
 .notice-item:hover::before { width: 2px; }
@@ -893,8 +893,8 @@ body {
 }
 
 .brand-value-card:hover {
-  border-color: rgba(212, 180, 133, 0.2);
-  background: rgba(212, 180, 133, 0.03);
+  border-color: rgba(201, 169, 110, 0.2);
+  background: rgba(201, 169, 110, 0.03);
   transform: translateY(-4px);
 }
 
@@ -943,8 +943,8 @@ body {
   gap: 14px;
   margin-top: 36px;
   padding: 18px 28px;
-  background: rgba(212, 180, 133, 0.06);
-  border: 1px solid rgba(212, 180, 133, 0.12);
+  background: rgba(201, 169, 110, 0.06);
+  border: 1px solid rgba(201, 169, 110, 0.12);
   border-radius: 6px;
   color: var(--color-accent);
   font-size: 14px;
@@ -956,10 +956,10 @@ body {
 }
 
 .brand-email-block:hover {
-  background: rgba(212, 180, 133, 0.1);
-  border-color: rgba(212, 180, 133, 0.25);
+  background: rgba(201, 169, 110, 0.1);
+  border-color: rgba(201, 169, 110, 0.25);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(212, 180, 133, 0.08);
+  box-shadow: 0 8px 32px rgba(201, 169, 110, 0.08);
 }
 
 .brand-email-block svg {
@@ -995,7 +995,7 @@ body {
 
 .contact-info-item:hover {
   padding-left: 8px;
-  background: rgba(212, 180, 133, 0.02);
+  background: rgba(201, 169, 110, 0.02);
 }
 
 .contact-info-item:last-child { border-bottom: none; }
@@ -1053,7 +1053,7 @@ body {
   transform: translateX(-50%);
   width: 600px;
   height: 400px;
-  background: radial-gradient(ellipse, rgba(212, 180, 133, 0.02) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(201, 169, 110, 0.02) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -1130,7 +1130,7 @@ body {
 .mobile-menu {
   position: fixed;
   inset: 0;
-  background: rgba(28, 24, 22, 0.97);
+  background: rgba(26, 46, 36, 0.97);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   z-index: 200;

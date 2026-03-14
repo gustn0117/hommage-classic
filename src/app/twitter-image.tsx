@@ -16,7 +16,7 @@ export default function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(145deg, #1c1816 0%, #262018 40%, #1c1816 100%)",
+          background: "linear-gradient(145deg, #1a2e24 0%, #1f3a2d 40%, #1a2e24 100%)",
           position: "relative",
         }}
       >
@@ -27,7 +27,7 @@ export default function Image() {
             left: "35%",
             width: "30%",
             height: "40%",
-            background: "radial-gradient(ellipse, rgba(212, 180, 133, 0.08) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse, rgba(201, 169, 110, 0.08) 0%, transparent 70%)",
           }}
         />
         <div
@@ -37,14 +37,14 @@ export default function Image() {
             left: "20%",
             width: "60%",
             height: "2px",
-            background: "linear-gradient(90deg, transparent, rgba(212, 180, 133, 0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.4), transparent)",
           }}
         />
         <div
           style={{
             fontSize: "96px",
             fontWeight: 100,
-            color: "#f2ece4",
+            color: "#f0ebe3",
             letterSpacing: "24px",
             lineHeight: 1,
           }}
@@ -55,7 +55,7 @@ export default function Image() {
           style={{
             fontSize: "28px",
             fontWeight: 100,
-            color: "#f2ece4",
+            color: "#f0ebe3",
             letterSpacing: "18px",
             marginTop: "16px",
           }}
@@ -66,7 +66,7 @@ export default function Image() {
           style={{
             width: "1px",
             height: "40px",
-            background: "linear-gradient(to bottom, rgba(212, 180, 133, 0.6), transparent)",
+            background: "linear-gradient(to bottom, rgba(201, 169, 110, 0.6), transparent)",
             marginTop: "32px",
           }}
         />
@@ -74,7 +74,7 @@ export default function Image() {
           style={{
             fontSize: "16px",
             fontWeight: 300,
-            color: "#d4b485",
+            color: "#c9a96e",
             letterSpacing: "8px",
             marginTop: "24px",
             opacity: 0.7,
@@ -90,7 +90,7 @@ export default function Image() {
             left: "20%",
             width: "60%",
             height: "2px",
-            background: "linear-gradient(90deg, transparent, rgba(212, 180, 133, 0.4), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.4), transparent)",
           }}
         />
       </div>
