@@ -1,37 +1,32 @@
 import { createPublicClient } from "@/lib/supabase";
 import HomeClient from "./HomeClient";
-import type { AuditionInfo, HeroVideo, SnsLinks } from "@/lib/types";
+import type { BrandInfo, HeroVideo, SnsLinks } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-function normalizeAudition(raw: any): AuditionInfo {
-  if (raw?.introText1) return raw as AuditionInfo;
+function normalizeBrandInfo(raw: any): BrandInfo {
+  if (raw?.values) return raw as BrandInfo;
   return {
-    email: raw?.online?.email || raw?.email || "moodkent@gmail.com",
-    introText1: "MOOD K ENTERTAINMENT는\n아티스트의 현재보다 앞으로의 여정을 더 중요하게 생각합니다.",
-    introText2: "우리는 가능성을 서두르지 않습니다.\n한 사람의 방향과 시간을 충분히 바라본 후, 신중하게 결정합니다.",
-    materials: [
-      "일반 사진 (정면 및 측면 각 1장)",
-      "1분 이내 자기소개 영상",
-      "프로필 PDF 1부 또는 연기 영상 (경력자 해당)",
-      "활동 경력 사항 (경력자 해당)",
+    email: raw?.email || "hommageclassic@gmail.com",
+    introText1: "HOMMAGE CLASSIC은\n좋은 마음, 정직한 마음을 향기에 담아\n존경과 경의를 표현하는 브랜드입니다.",
+    introText2: "한국적 감성과 클래식한 아름다움의 조화 속에서\n사람을 가장 본질적인 순간으로 돌려보내는 향을 만듭니다.",
+    values: [
+      "정직한 원료, 진심을 담은 제조",
+      "한국적 감성과 클래식한 아름다움의 조화",
+      "삶을 조용히 정돈하는 향의 경험",
     ],
-    processSteps: [
-      "위 자료를 이메일로 제출",
-      "이메일 제목: MOOD K AUDITION / 이름 / 출생연도",
-      "서류 검토 후, 합격자에 한해 2주 이내 개별 연락드립니다.",
-    ],
-    privacyNote: "제출된 모든 자료는 신중히 검토되며, 오디션 심사 목적 외 사용되지 않습니다.\n심사 종료 후 안전하게 관리됩니다.",
+    slogan: "CRAFTED WITH SINCERE HANDS,\nA LIFE QUIETLY REFINED.\nIT LEADS YOU BACK\nTO WHAT MATTERS MOST — WITHIN.",
+    privacyNote: "",
   };
 }
 
 function normalizeHeroVideo(raw: any): HeroVideo {
   if (raw?.url) return raw as HeroVideo;
   return {
-    type: "youtube",
-    url: "https://youtu.be/C9trFvo-azY",
-    fallbackText: "MOOD K ENTERTAINMENT",
+    type: "local",
+    url: "",
+    fallbackText: "HOMMAGE CLASSIC",
   };
 }
 
@@ -52,7 +47,7 @@ export default async function Home() {
     { data: filmography },
     { data: notices },
     { data: companyInfoRow },
-    { data: auditionInfoRow },
+    { data: brandInfoRow },
     { data: heroVideoRow },
     { data: snsLinksRow },
   ] = await Promise.all([
@@ -65,17 +60,17 @@ export default async function Home() {
     supabase.from("site_settings").select("value").eq("key", "sns_links").single(),
   ]);
 
-  const artistsWithFilmo = (artists || []).map((artist) => ({
+  const productsWithDetails = (artists || []).map((artist) => ({
     ...artist,
     filmography: (filmography || []).filter((f) => f.artist_id === artist.id),
   }));
 
   return (
     <HomeClient
-      artists={artistsWithFilmo}
+      products={productsWithDetails}
       notices={notices || []}
       companyInfo={companyInfoRow?.value as never}
-      auditionInfo={normalizeAudition(auditionInfoRow?.value)}
+      brandInfo={normalizeBrandInfo(brandInfoRow?.value)}
       heroVideo={normalizeHeroVideo(heroVideoRow?.value)}
       snsLinks={normalizeSnsLinks(snsLinksRow?.value)}
     />

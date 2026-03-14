@@ -51,14 +51,17 @@ export interface CompanyInfo {
   description: string;
 }
 
-export interface AuditionInfo {
+export interface BrandInfo {
   email: string;
   introText1: string;
   introText2: string;
-  materials: string[];
-  processSteps: string[];
+  values: string[];
+  slogan: string;
   privacyNote: string;
 }
+
+// Keep backward compatibility alias
+export type AuditionInfo = BrandInfo & { materials?: string[]; processSteps?: string[] };
 
 export interface HeroVideo {
   type: "youtube" | "local";

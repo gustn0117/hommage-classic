@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
-const COOKIE_NAME = "moodk_admin_session";
-const SESSION_TOKEN = "moodk_admin_authenticated";
+const COOKIE_NAME = "hommage_admin_session";
+const SESSION_TOKEN = "hommage_admin_authenticated";
 
 export async function verifyAuth(): Promise<boolean> {
   const cookieStore = await cookies();

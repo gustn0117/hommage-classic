@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, Fragment } from "react";
-import type { CompanyInfo, AuditionInfo, HeroVideo, SnsLinks } from "@/lib/types";
+import type { CompanyInfo, BrandInfo, HeroVideo, SnsLinks } from "@/lib/types";
 
 function getYouTubeId(url: string): string | null {
   const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([^?&#]+)/);
@@ -14,14 +14,14 @@ function renderLines(text: string) {
   ));
 }
 
-interface Artist {
+interface Product {
   id: string;
   name_ko: string;
   name_en: string;
-  birth_date: string;
+  birth_date: string; // used as category (e.g. "Reed Diffuser")
   height: string;
   weight: string;
-  specialty: string;
+  specialty: string; // used as short description
   profile_image: string;
   photos: string[];
   filmography: { year: string; category: string; title: string; role: string }[];
@@ -35,23 +35,23 @@ interface Notice {
 }
 
 interface Props {
-  artists: Artist[];
+  products: Product[];
   notices: Notice[];
   companyInfo: CompanyInfo;
-  auditionInfo: AuditionInfo;
+  brandInfo: BrandInfo;
   heroVideo: HeroVideo;
   snsLinks: SnsLinks;
 }
 
 const NAV_ITEMS = [
   { id: "home", label: "HOME" },
-  { id: "artists", label: "ARTISTS" },
+  { id: "collection", label: "COLLECTION" },
+  { id: "about", label: "ABOUT" },
   { id: "notice", label: "NOTICE" },
-  { id: "audition", label: "AUDITION" },
   { id: "contact", label: "CONTACT" },
 ];
 
-const SECTION_IDS = ["home", "artists", "notice", "audition", "contact"];
+const SECTION_IDS = ["home", "collection", "about", "notice", "contact"];
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -107,7 +107,7 @@ function useScrollSpy() {
   return activeSection;
 }
 
-export default function HomeClient({ artists, notices, companyInfo, auditionInfo, heroVideo, snsLinks }: Props) {
+export default function HomeClient({ products, notices, companyInfo, brandInfo, heroVideo, snsLinks }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openNotice, setOpenNotice] = useState<number | null>(null);
@@ -137,7 +137,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
         <div className="section-container">
           <div className="nav-inner">
             <button onClick={() => scrollTo("home")} className="nav-logo">
-              MOOD K
+              HOMMAGE
             </button>
 
             <div
@@ -242,24 +242,24 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
         <div className="hero-overlay" />
         <div className="hero-content">
           <h1 className="hero-title">
-            <span className="hero-title-main">MOOD K</span>
+            <span className="hero-title-main">HOMMAGE</span>
             <br />
-            <span className="hero-title-sub">ENTERTAINMENT</span>
+            <span className="hero-title-sub">CLASSIC</span>
           </h1>
-          <p className="hero-tagline">Management with Intention</p>
+          <p className="hero-tagline">Crafted with Sincere Hands</p>
           <div className="hero-divider" />
           <p className="hero-description">
-            MOOD K,
+            정직한 손으로 만들어진 향,
             <br />
-            배우의 장기적 커리어를 설계합니다
+            조용히 삶을 정돈하는 시간
           </p>
           <p className="hero-description hero-description-sub">
-            작품 선택과 이미지 방향성을 기반으로
+            가장 중요한 것, 나 자신에게
             <br />
-            지속 가능한 활동을 관리합니다
+            돌아가게 하는 향
           </p>
         </div>
-        <button className="scroll-indicator" onClick={() => scrollTo("artists")} aria-label="Scroll down">
+        <button className="scroll-indicator" onClick={() => scrollTo("collection")} aria-label="Scroll down">
           <span className="scroll-indicator-text">SCROLL</span>
           <span className="scroll-indicator-line" />
           <svg className="scroll-indicator-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -268,188 +268,222 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
         </button>
       </section>
 
-      {/* Artists Section */}
-      <section id="artists" className="section-glow" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
+      {/* Collection Section */}
+      <section id="collection" className="section-glow" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
           <div className="reveal-blur">
             <div className="section-title-wrap">
               <span className="section-number">01</span>
-              <h2 className="section-title">Artists</h2>
+              <h2 className="section-title">Collection</h2>
               <span className="section-title-bar" />
             </div>
           </div>
 
-          {artists.map((artist) => (
-            <div key={artist.id} className="artist-block">
-              <div className="reveal-left">
-                <div className="artist-name-wrap">
-                  <div className="artist-name-en">{artist.name_en}</div>
-                  <div className="artist-name-ko">{artist.name_ko}</div>
-                </div>
-              </div>
-
-              <div className="artist-profile-grid">
-                <div className="reveal-scale">
-                  {artist.profile_image ? (
-                    <img
-                      className="artist-main-photo"
-                      src={artist.profile_image}
-                      alt={artist.name_ko}
-                    />
-                  ) : (
-                    <div className="artist-main-photo img-placeholder">
-                      PROFILE PHOTO
-                    </div>
-                  )}
-                </div>
-
-                <div className="reveal-right reveal-delay-1">
-                  <div className="artist-info-single">
-                    <div className="artist-info-cell">
-                      <div className="artist-info-label">Birth</div>
-                      <div className="artist-info-value">{artist.birth_date}</div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="filmography-header">Works</h3>
-                    <table className="filmography-table">
-                      <thead>
-                        <tr>
-                          <th style={{ width: "60px" }}>Year</th>
-                          <th style={{ width: "80px" }}>Type</th>
-                          <th>Title</th>
-                          <th style={{ width: "120px" }}>Role</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {artist.filmography.map((item, idx) => (
-                          <tr key={idx}>
-                            <td>{item.year}</td>
-                            <td>{item.category}</td>
-                            <td style={{ color: "var(--color-text-primary)" }}>{item.title}</td>
-                            <td>{item.role}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div key={product.id} className="product-block">
+                <div className="reveal-left">
+                  <div className="product-name-wrap">
+                    <div className="product-name-en">{product.name_en}</div>
+                    <div className="product-name-ko">{product.name_ko}</div>
                   </div>
                 </div>
-              </div>
 
-              {artist.photos.length > 0 && (
-                <div className="artist-photo-grid">
-                  {artist.photos.map((url, idx) => (
-                    <div key={idx} className={`artist-photo-thumb reveal-scale reveal-delay-${Math.min(idx + 1, 3)}`}>
-                      <img src={url} alt={`${artist.name_ko} photo ${idx + 1}`} />
+                <div className="product-profile-grid">
+                  <div className="reveal-scale">
+                    {product.profile_image ? (
+                      <img
+                        className="product-main-photo"
+                        src={product.profile_image}
+                        alt={product.name_ko}
+                      />
+                    ) : (
+                      <div className="product-main-photo img-placeholder">
+                        PRODUCT PHOTO
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="reveal-right reveal-delay-1">
+                    <div className="product-info-single">
+                      <div className="product-info-cell">
+                        <div className="product-info-label">Category</div>
+                        <div className="product-info-value">{product.birth_date}</div>
+                      </div>
                     </div>
-                  ))}
+
+                    {product.specialty && (
+                      <div className="product-description-text">
+                        {renderLines(product.specialty)}
+                      </div>
+                    )}
+
+                    {product.filmography.length > 0 && (
+                      <div>
+                        <h3 className="product-detail-header">Details</h3>
+                        <table className="product-detail-table">
+                          <thead>
+                            <tr>
+                              <th style={{ width: "100px" }}>Type</th>
+                              <th>Description</th>
+                              <th style={{ width: "100px" }}>Note</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {product.filmography.map((item, idx) => (
+                              <tr key={idx}>
+                                <td>{item.category}</td>
+                                <td style={{ color: "var(--color-text-primary)" }}>{item.title}</td>
+                                <td>{item.role}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
+
+                {product.photos.length > 0 && (
+                  <div className="product-photo-grid">
+                    {product.photos.map((url, idx) => (
+                      <div key={idx} className={`product-photo-thumb reveal-scale reveal-delay-${Math.min(idx + 1, 3)}`}>
+                        <img src={url} alt={`${product.name_ko} photo ${idx + 1}`} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            /* Default static collection when no DB products */
+            <div className="collection-showcase">
+              {[
+                {
+                  name: "REED DIFFUSER",
+                  nameKo: "리드 디퓨저",
+                  desc: "자연에서 영감을 받은 섬세한 향이\n공간을 조용히 채워갑니다.\n정직한 원료만을 담아 만든\n오마주클래식의 시그니처 디퓨저.",
+                },
+                {
+                  name: "NATURAL SOAP",
+                  nameKo: "내추럴 솝",
+                  desc: "피부에 닿는 순간부터 다른 것을 느낄 수 있도록.\n식물성 오일과 천연 향료로 완성한\n부드럽고 깊은 세정의 경험.",
+                },
+                {
+                  name: "GIFT SET",
+                  nameKo: "기프트 세트",
+                  desc: "소중한 사람에게 전하는 경의.\n정성스럽게 큐레이션한 향과 케어 아이템을\n하나의 세트로 담았습니다.",
+                },
+              ].map((item, idx) => (
+                <div key={idx} className={`collection-card reveal-scale reveal-delay-${idx + 1}`}>
+                  <div className="collection-card-image img-placeholder">
+                    <span>{item.name}</span>
+                  </div>
+                  <div className="collection-card-info">
+                    <div className="collection-card-name">{item.name}</div>
+                    <div className="collection-card-name-ko">{item.nameKo}</div>
+                    <p className="collection-card-desc">{renderLines(item.desc)}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* About Section */}
+      <section id="about" className="section-glow" style={{ padding: "140px 0", background: "var(--color-bg-secondary)" }}>
+        <div className="section-container">
+          <div className="reveal-blur">
+            <div className="section-title-wrap">
+              <span className="section-number">02</span>
+              <h2 className="section-title">About</h2>
+              <span className="section-title-bar" />
+            </div>
+          </div>
+
+          <div className="brand-story reveal">
+            <p className="brand-story-text">
+              {renderLines(brandInfo.introText1)}
+            </p>
+            <p className="brand-story-text brand-story-sub">
+              {renderLines(brandInfo.introText2)}
+            </p>
+          </div>
+
+          <div className="brand-philosophy reveal reveal-delay-1">
+            <div className="brand-philosophy-grid">
+              {brandInfo.values.map((value, i) => (
+                <div key={i} className="brand-value-card">
+                  <div className="brand-value-number">0{i + 1}</div>
+                  <div className="brand-value-text">{value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="brand-slogan reveal reveal-delay-2">
+            <blockquote className="brand-slogan-text">
+              {renderLines(brandInfo.slogan)}
+            </blockquote>
+          </div>
+
+          {brandInfo.email && (
+            <a href={`mailto:${brandInfo.email}`} className="brand-email-block reveal-scale">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M22 4L12 13 2 4" />
+              </svg>
+              <span>{brandInfo.email}</span>
+            </a>
+          )}
         </div>
       </section>
 
       <div className="section-divider" />
 
       {/* Notice Section */}
-      <section id="notice" style={{ padding: "140px 0", background: "var(--color-bg-secondary)" }}>
+      <section id="notice" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
           <div className="reveal-blur">
             <div className="section-title-wrap">
-              <span className="section-number">02</span>
+              <span className="section-number">03</span>
               <h2 className="section-title">Notice</h2>
               <span className="section-title-bar" />
             </div>
           </div>
 
           <div className="reveal">
-            {notices.map((notice) => (
-              <div
-                key={notice.id}
-                className="notice-item"
-                onClick={() => setOpenNotice(openNotice === notice.id ? null : notice.id)}
-              >
-                <div className="notice-date">{notice.date}</div>
-                <div className="notice-title-text">{notice.title}</div>
-                <svg
-                  className={`notice-chevron ${openNotice === notice.id ? "open" : ""}`}
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
+            {notices.length > 0 ? (
+              notices.map((notice) => (
+                <div
+                  key={notice.id}
+                  className="notice-item"
+                  onClick={() => setOpenNotice(openNotice === notice.id ? null : notice.id)}
                 >
-                  <path d="M4 6l4 4 4-4" />
-                </svg>
-                <div className={`notice-content ${openNotice === notice.id ? "open" : ""}`}>
-                  <div className="notice-content-inner" style={{ whiteSpace: "pre-line" }}>{notice.content}</div>
+                  <div className="notice-date">{notice.date}</div>
+                  <div className="notice-title-text">{notice.title}</div>
+                  <svg
+                    className={`notice-chevron ${openNotice === notice.id ? "open" : ""}`}
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M4 6l4 4 4-4" />
+                  </svg>
+                  <div className={`notice-content ${openNotice === notice.id ? "open" : ""}`}>
+                    <div className="notice-content-inner" style={{ whiteSpace: "pre-line" }}>{notice.content}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider" />
-
-      {/* Audition Section */}
-      <section id="audition" className="section-glow" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
-        <div className="section-container">
-          <div className="reveal-blur">
-            <div className="section-title-wrap">
-              <span className="section-number">03</span>
-              <h2 className="section-title">Audition</h2>
-              <span className="section-title-bar" />
-            </div>
-          </div>
-
-          {/* Intro */}
-          <div className="audition-intro reveal">
-            <p className="audition-intro-text">
-              {renderLines(auditionInfo.introText1)}
-            </p>
-            <p className="audition-intro-text audition-intro-sub">
-              {renderLines(auditionInfo.introText2)}
-            </p>
-          </div>
-
-          {/* How to Apply */}
-          <div className="audition-section-block reveal reveal-delay-1">
-            <h3 className="audition-block-title">오디션 지원 방법</h3>
-
-            <div className="audition-apply-grid">
-              <div className="audition-apply-card">
-                <div className="audition-apply-label">제출 자료</div>
-                <ul className="audition-apply-list">
-                  {auditionInfo.materials.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="audition-apply-card">
-                <div className="audition-apply-label">접수 방법</div>
-                <ul className="audition-apply-list">
-                  {auditionInfo.processSteps.map((step, i) => (
-                    <li key={i}>{step}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <a href={`mailto:${auditionInfo.email}`} className="audition-email-block reveal-scale">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="M22 4L12 13 2 4" />
-              </svg>
-              <span>{auditionInfo.email}</span>
-            </a>
-          </div>
-
-          {/* Privacy Note */}
-          <div className="audition-privacy reveal reveal-delay-2">
-            <p>{renderLines(auditionInfo.privacyNote)}</p>
+              ))
+            ) : (
+              <p style={{ color: "var(--color-text-muted)", fontSize: "14px", fontWeight: 300 }}>
+                등록된 공지사항이 없습니다.
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -470,7 +504,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
           <div className="contact-grid">
             <div className="reveal-left">
               <div className="contact-info-item">
-                <div className="contact-info-label">Company</div>
+                <div className="contact-info-label">Brand</div>
                 <div className="contact-info-value">{companyInfo.nameKo}</div>
               </div>
               <div className="contact-info-item">
@@ -500,7 +534,7 @@ export default function HomeClient({ artists, notices, companyInfo, auditionInfo
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   allowFullScreen
-                  title="MOOD K ENTERTAINMENT 위치"
+                  title="HOMMAGE CLASSIC 위치"
                 />
               </div>
             </div>

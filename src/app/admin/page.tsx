@@ -31,7 +31,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-login">
       <form onSubmit={handleLogin} className="admin-login-card">
-        <div className="admin-login-title">MOOD K</div>
+        <div className="admin-login-title">HOMMAGE</div>
         <div className="admin-login-subtitle">ADMIN</div>
 
         <div className="admin-form-group">

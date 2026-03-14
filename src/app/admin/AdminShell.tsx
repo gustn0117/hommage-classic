@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const NAV = [
   { href: "/admin/dashboard", label: "대시보드", icon: "◈" },
-  { href: "/admin/artists", label: "아티스트", icon: "◇" },
+  { href: "/admin/artists", label: "제품 관리", icon: "◇" },
   { href: "/admin/notices", label: "공지사항", icon: "▷" },
   { href: "/admin/settings", label: "사이트 설정", icon: "⚙" },
 ];
@@ -21,7 +21,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   return (
     <div className="admin-layout">
       <aside className="admin-sidebar">
-        <div className="admin-sidebar-brand">MOOD K</div>
+        <div className="admin-sidebar-brand">HOMMAGE</div>
         <nav style={{ padding: "8px 0" }}>
           {NAV.map((item) => (
             <a

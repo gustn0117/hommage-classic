@@ -6,13 +6,13 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export function createPublicClient() {
   return createClient(supabaseUrl, supabaseAnonKey, {
-    db: { schema: "moodk_entertainment" },
+    db: { schema: "hommage_classic" },
   });
 }
 
 export function createAdminClient() {
   return createClient(supabaseUrl, supabaseServiceKey, {
-    db: { schema: "moodk_entertainment" },
+    db: { schema: "hommage_classic" },
   });
 }
 

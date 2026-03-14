@@ -25,7 +25,7 @@ export default function Dashboard() {
       <div className="admin-stats">
         <div className="admin-stat-card">
           <div className="admin-stat-value">{stats.artists}</div>
-          <div className="admin-stat-label">Artists</div>
+          <div className="admin-stat-label">Products</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{stats.notices}</div>
@@ -41,7 +41,7 @@ export default function Dashboard() {
         <div className="admin-card-header">Quick Access</div>
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           <a href="/admin/artists" className="admin-btn admin-btn-secondary">
-            아티스트 관리
+            제품 관리
           </a>
           <a href="/admin/notices" className="admin-btn admin-btn-secondary">
             공지사항 관리

@@ -2,34 +2,29 @@
 
 import { useState, useEffect } from "react";
 import AdminShell from "../AdminShell";
-import type { CompanyInfo, AuditionInfo, HeroVideo, SnsLinks } from "@/lib/types";
+import type { CompanyInfo, BrandInfo, HeroVideo, SnsLinks } from "@/lib/types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-function normalizeAudition(raw: any): AuditionInfo {
-  if (raw?.introText1) return raw as AuditionInfo;
+function normalizeBrandInfo(raw: any): BrandInfo {
+  if (raw?.values) return raw as BrandInfo;
   return {
-    email: raw?.online?.email || raw?.email || "moodkent@gmail.com",
-    introText1: "MOOD K ENTERTAINMENT는\n아티스트의 현재보다 앞으로의 여정을 더 중요하게 생각합니다.",
-    introText2: "우리는 가능성을 서두르지 않습니다.\n한 사람의 방향과 시간을 충분히 바라본 후, 신중하게 결정합니다.",
-    materials: [
-      "일반 사진 (정면 및 측면 각 1장)",
-      "1분 이내 자기소개 영상",
-      "프로필 PDF 1부 또는 연기 영상 (경력자 해당)",
-      "활동 경력 사항 (경력자 해당)",
+    email: raw?.email || "hommageclassic@gmail.com",
+    introText1: "HOMMAGE CLASSIC은\n좋은 마음, 정직한 마음을 향기에 담아\n존경과 경의를 표현하는 브랜드입니다.",
+    introText2: "한국적 감성과 클래식한 아름다움의 조화 속에서\n사람을 가장 본질적인 순간으로 돌려보내는 향을 만듭니다.",
+    values: [
+      "정직한 원료, 진심을 담은 제조",
+      "한국적 감성과 클래식한 아름다움의 조화",
+      "삶을 조용히 정돈하는 향의 경험",
     ],
-    processSteps: [
-      "위 자료를 이메일로 제출",
-      "이메일 제목: MOOD K AUDITION / 이름 / 출생연도",
-      "서류 검토 후, 합격자에 한해 2주 이내 개별 연락드립니다.",
-    ],
-    privacyNote: "제출된 모든 자료는 신중히 검토되며, 오디션 심사 목적 외 사용되지 않습니다.\n심사 종료 후 안전하게 관리됩니다.",
+    slogan: "CRAFTED WITH SINCERE HANDS,\nA LIFE QUIETLY REFINED.\nIT LEADS YOU BACK\nTO WHAT MATTERS MOST — WITHIN.",
+    privacyNote: "",
   };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 export default function SettingsPage() {
   const [company, setCompany] = useState<CompanyInfo | null>(null);
-  const [audition, setAudition] = useState<AuditionInfo | null>(null);
+  const [brand, setBrand] = useState<BrandInfo | null>(null);
   const [hero, setHero] = useState<HeroVideo | null>(null);
   const [sns, setSns] = useState<SnsLinks | null>(null);
   const [toast, setToast] = useState("");
@@ -42,7 +37,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     fetch("/api/settings/company_info").then((r) => r.json()).then(setCompany);
-    fetch("/api/settings/audition_info").then((r) => r.json()).then((data) => setAudition(normalizeAudition(data)));
+    fetch("/api/settings/audition_info").then((r) => r.json()).then((data) => setBrand(normalizeBrandInfo(data)));
     fetch("/api/settings/hero_video").then((r) => r.json()).then(setHero);
     fetch("/api/settings/sns_links").then((r) => r.json()).then((data) =>
       setSns({ instagram: data?.instagram || "", x: data?.x || "", youtube: data?.youtube || "" })
@@ -60,7 +55,7 @@ export default function SettingsPage() {
     showToast("저장되었습니다");
   };
 
-  if (!company || !audition || !hero || !sns) {
+  if (!company || !brand || !hero || !sns) {
     return <AdminShell><p>로딩 중...</p></AdminShell>;
   }
 
@@ -103,7 +98,7 @@ export default function SettingsPage() {
           </div>
         </div>
         <p style={{ fontSize: "12px", color: "var(--color-text-muted)", marginTop: "4px" }}>
-          비워두면 그라데이션 배경이 표시됩니다. YouTube는 embed URL을 사용하세요.
+          비워두면 그라데이션 배경이 표시됩니다.
         </p>
       </div>
 
@@ -167,11 +162,11 @@ export default function SettingsPage() {
         </div>
         <div className="admin-form-grid">
           <div className="admin-form-group">
-            <label className="admin-label">회사명 (영문)</label>
+            <label className="admin-label">브랜드명 (영문)</label>
             <input className="admin-input" value={company.name} onChange={(e) => setCompany({ ...company, name: e.target.value })} />
           </div>
           <div className="admin-form-group">
-            <label className="admin-label">회사명 (한글)</label>
+            <label className="admin-label">브랜드명 (한글)</label>
             <input className="admin-input" value={company.nameKo} onChange={(e) => setCompany({ ...company, nameKo: e.target.value })} />
           </div>
           <div className="admin-form-group">
@@ -199,7 +194,7 @@ export default function SettingsPage() {
             <input className="admin-input" value={company.addressDetail} onChange={(e) => setCompany({ ...company, addressDetail: e.target.value })} />
           </div>
           <div className="admin-form-group admin-form-full">
-            <label className="admin-label">회사 소개</label>
+            <label className="admin-label">브랜드 소개</label>
             <textarea
               className="admin-input admin-textarea"
               value={company.description}
@@ -210,13 +205,13 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Audition Info */}
+      {/* Brand Info (About Section) */}
       <div className="admin-card">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-          <div className="admin-card-header" style={{ marginBottom: 0 }}>Audition Info</div>
+          <div className="admin-card-header" style={{ marginBottom: 0 }}>Brand Story (About 섹션)</div>
           <button
             className="admin-btn admin-btn-primary admin-btn-sm"
-            onClick={() => saveSection("audition_info", audition)}
+            onClick={() => saveSection("audition_info", brand)}
             disabled={saving === "audition_info"}
           >
             {saving === "audition_info" ? "저장 중..." : "저장"}
@@ -225,52 +220,43 @@ export default function SettingsPage() {
 
         <div className="admin-form-grid">
           <div className="admin-form-group">
-            <label className="admin-label">이메일</label>
-            <input className="admin-input" value={audition.email} onChange={(e) => setAudition({ ...audition, email: e.target.value })} />
+            <label className="admin-label">문의 이메일</label>
+            <input className="admin-input" value={brand.email} onChange={(e) => setBrand({ ...brand, email: e.target.value })} />
           </div>
           <div className="admin-form-group admin-form-full">
-            <label className="admin-label">인트로 텍스트 1 (줄바꿈 지원)</label>
+            <label className="admin-label">브랜드 소개 텍스트 1 (줄바꿈 지원)</label>
             <textarea
               className="admin-input admin-textarea"
-              value={audition.introText1}
-              onChange={(e) => setAudition({ ...audition, introText1: e.target.value })}
-              rows={2}
-            />
-          </div>
-          <div className="admin-form-group admin-form-full">
-            <label className="admin-label">인트로 텍스트 2 (줄바꿈 지원)</label>
-            <textarea
-              className="admin-input admin-textarea"
-              value={audition.introText2}
-              onChange={(e) => setAudition({ ...audition, introText2: e.target.value })}
-              rows={2}
-            />
-          </div>
-          <div className="admin-form-group admin-form-full">
-            <label className="admin-label">제출 자료 (줄바꿈으로 구분)</label>
-            <textarea
-              className="admin-input admin-textarea"
-              value={audition.materials.join("\n")}
-              onChange={(e) => setAudition({ ...audition, materials: e.target.value.split("\n").filter(Boolean) })}
-              rows={4}
-            />
-          </div>
-          <div className="admin-form-group admin-form-full">
-            <label className="admin-label">접수 절차 (줄바꿈으로 구분)</label>
-            <textarea
-              className="admin-input admin-textarea"
-              value={audition.processSteps.join("\n")}
-              onChange={(e) => setAudition({ ...audition, processSteps: e.target.value.split("\n").filter(Boolean) })}
+              value={brand.introText1}
+              onChange={(e) => setBrand({ ...brand, introText1: e.target.value })}
               rows={3}
             />
           </div>
           <div className="admin-form-group admin-form-full">
-            <label className="admin-label">개인정보 안내 (줄바꿈 지원)</label>
+            <label className="admin-label">브랜드 소개 텍스트 2 (줄바꿈 지원)</label>
             <textarea
               className="admin-input admin-textarea"
-              value={audition.privacyNote}
-              onChange={(e) => setAudition({ ...audition, privacyNote: e.target.value })}
-              rows={2}
+              value={brand.introText2}
+              onChange={(e) => setBrand({ ...brand, introText2: e.target.value })}
+              rows={3}
+            />
+          </div>
+          <div className="admin-form-group admin-form-full">
+            <label className="admin-label">브랜드 가치 (줄바꿈으로 구분)</label>
+            <textarea
+              className="admin-input admin-textarea"
+              value={brand.values.join("\n")}
+              onChange={(e) => setBrand({ ...brand, values: e.target.value.split("\n").filter(Boolean) })}
+              rows={4}
+            />
+          </div>
+          <div className="admin-form-group admin-form-full">
+            <label className="admin-label">브랜드 슬로건 (줄바꿈 지원)</label>
+            <textarea
+              className="admin-input admin-textarea"
+              value={brand.slogan}
+              onChange={(e) => setBrand({ ...brand, slogan: e.target.value })}
+              rows={4}
             />
           </div>
         </div>

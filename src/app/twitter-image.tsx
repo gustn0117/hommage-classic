@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
-export const alt = "MOOD K ENTERTAINMENT";
+export const alt = "HOMMAGE CLASSIC";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -49,7 +49,7 @@ export default function Image() {
             lineHeight: 1,
           }}
         >
-          MOOD K
+          HOMMAGE
         </div>
         <div
           style={{
@@ -60,7 +60,7 @@ export default function Image() {
             marginTop: "16px",
           }}
         >
-          ENTERTAINMENT
+          CLASSIC
         </div>
         <div
           style={{
@@ -81,7 +81,7 @@ export default function Image() {
             fontStyle: "italic",
           }}
         >
-          Management with Intention
+          Crafted with Sincere Hands
         </div>
         <div
           style={{

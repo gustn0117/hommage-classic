@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://moodk-entertainment.hsweb.pics"),
-  title: "MOOD K ENTERTAINMENT",
-  description: "무드케이엔터테인먼트 - 배우 매니지먼트",
+  metadataBase: new URL("https://hommageclassic.hsweb.pics"),
+  title: "HOMMAGE CLASSIC",
+  description: "오마주클래식 - 정직한 마음으로 만든 향, 디퓨저 & 비누 & 기프트세트",
   openGraph: {
-    title: "MOOD K ENTERTAINMENT",
-    description: "Management with Intention",
-    siteName: "MOOD K ENTERTAINMENT",
+    title: "HOMMAGE CLASSIC",
+    description: "Crafted with Sincere Hands, A Life Quietly Refined.",
+    siteName: "HOMMAGE CLASSIC",
     locale: "ko_KR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "MOOD K ENTERTAINMENT",
-    description: "Management with Intention",
+    title: "HOMMAGE CLASSIC",
+    description: "Crafted with Sincere Hands, A Life Quietly Refined.",
   },
 };
 

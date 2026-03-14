@@ -475,23 +475,23 @@ body {
 }
 
 /* ========================================
-   Artist
+   Product (Collection)
    ======================================== */
-.artist-block {
+.product-block {
   margin-bottom: 120px;
 }
 
-.artist-block:last-child {
+.product-block:last-child {
   margin-bottom: 0;
 }
 
-.artist-name-wrap {
+.product-name-wrap {
   margin-bottom: 56px;
   position: relative;
   padding-left: 28px;
 }
 
-.artist-name-wrap::before {
+.product-name-wrap::before {
   content: "";
   position: absolute;
   left: 0;
@@ -502,7 +502,7 @@ body {
   border-radius: 1px;
 }
 
-.artist-name-en {
+.product-name-en {
   font-size: clamp(28px, 4vw, 48px);
   font-weight: 100;
   letter-spacing: 10px;
@@ -511,7 +511,7 @@ body {
   line-height: 1.1;
 }
 
-.artist-name-ko {
+.product-name-ko {
   font-size: 14px;
   color: var(--color-text-muted);
   margin-top: 10px;
@@ -519,7 +519,7 @@ body {
   letter-spacing: 6px;
 }
 
-.artist-profile-grid {
+.product-profile-grid {
   display: grid;
   grid-template-columns: 5fr 6fr;
   gap: 72px;
@@ -527,15 +527,15 @@ body {
 }
 
 @media (max-width: 768px) {
-  .artist-profile-grid {
+  .product-profile-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
 }
 
-.artist-main-photo {
+.product-main-photo {
   width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4/5;
   object-fit: cover;
   border-radius: 8px;
   background: var(--color-bg-card);
@@ -544,43 +544,27 @@ body {
               filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.artist-main-photo:hover {
+.product-main-photo:hover {
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.35), 0 0 60px rgba(212, 180, 133, 0.08);
   filter: brightness(1.05);
 }
 
-.artist-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
-.artist-info-single {
+.product-info-single {
   margin-bottom: 8px;
 }
 
-.artist-info-cell {
+.product-info-cell {
   padding: 22px 16px 22px 0;
   border-bottom: 1px solid var(--color-border);
   transition: background 0.3s, padding-left 0.3s;
 }
 
-.artist-info-cell:hover {
+.product-info-cell:hover {
   background: rgba(212, 180, 133, 0.03);
   padding-left: 4px;
 }
 
-.artist-info-cell:nth-child(even) {
-  padding-left: 24px;
-  padding-right: 0;
-  border-left: 1px solid var(--color-border);
-}
-
-.artist-info-cell:nth-child(even):hover {
-  padding-left: 28px;
-}
-
-.artist-info-label {
+.product-info-label {
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -589,14 +573,23 @@ body {
   font-weight: 500;
 }
 
-.artist-info-value {
+.product-info-value {
   font-size: 16px;
   color: var(--color-text-primary);
   font-weight: 300;
   letter-spacing: 0.5px;
 }
 
-.artist-photo-grid {
+.product-description-text {
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 2.2;
+  font-weight: 300;
+  word-break: keep-all;
+}
+
+.product-photo-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
@@ -604,12 +597,12 @@ body {
 }
 
 @media (max-width: 640px) {
-  .artist-photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .product-photo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 }
 
-.artist-photo-thumb {
+.product-photo-thumb {
   width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 1/1;
   border-radius: 8px;
   background: var(--color-bg-card);
   overflow: hidden;
@@ -617,7 +610,7 @@ body {
   position: relative;
 }
 
-.artist-photo-thumb::after {
+.product-photo-thumb::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -626,9 +619,9 @@ body {
   z-index: 1;
 }
 
-.artist-photo-thumb:hover::after { opacity: 0; }
+.product-photo-thumb:hover::after { opacity: 0; }
 
-.artist-photo-thumb img {
+.product-photo-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -636,15 +629,73 @@ body {
               filter 0.5s;
 }
 
-.artist-photo-thumb:hover img {
+.product-photo-thumb:hover img {
   transform: scale(1.08);
   filter: brightness(1.1);
 }
 
 /* ========================================
-   Filmography
+   Collection Showcase (Static Fallback)
    ======================================== */
-.filmography-header {
+.collection-showcase {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+@media (max-width: 768px) {
+  .collection-showcase { grid-template-columns: 1fr; gap: 48px; }
+}
+
+.collection-card {
+  text-align: center;
+}
+
+.collection-card-image {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 10px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+.collection-card-info {
+  padding: 0 8px;
+}
+
+.collection-card-name {
+  font-size: 14px;
+  letter-spacing: 6px;
+  font-weight: 300;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+}
+
+.collection-card-name-ko {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+  letter-spacing: 4px;
+  font-weight: 300;
+}
+
+.collection-card-desc {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 2;
+  font-weight: 300;
+  word-break: keep-all;
+}
+
+/* ========================================
+   Product Details Table
+   ======================================== */
+.product-detail-header {
   font-size: 9px;
   letter-spacing: 4px;
   color: var(--color-accent);
@@ -654,9 +705,9 @@ body {
   text-transform: uppercase;
 }
 
-.filmography-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.product-detail-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 
-.filmography-table th {
+.product-detail-table th {
   font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -667,7 +718,7 @@ body {
   font-weight: 500;
 }
 
-.filmography-table td {
+.product-detail-table td {
   font-size: 14px;
   color: var(--color-text-secondary);
   padding: 16px 8px;
@@ -675,13 +726,13 @@ body {
   transition: color 0.3s;
 }
 
-.filmography-table tr { transition: background 0.3s; }
+.product-detail-table tr { transition: background 0.3s; }
 
-.filmography-table tbody td:first-child {
+.product-detail-table tbody td:first-child {
   position: relative;
 }
 
-.filmography-table tbody td:first-child::before {
+.product-detail-table tbody td:first-child::before {
   content: "";
   position: absolute;
   left: 0;
@@ -692,9 +743,9 @@ body {
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.filmography-table tbody tr:hover td:first-child::before { width: 2px; }
-.filmography-table tbody tr:hover { background: rgba(212, 180, 133, 0.04); }
-.filmography-table tbody tr:hover td {
+.product-detail-table tbody tr:hover td:first-child::before { width: 2px; }
+.product-detail-table tbody tr:hover { background: rgba(212, 180, 133, 0.04); }
+.product-detail-table tbody tr:hover td {
   color: var(--color-text-primary);
 }
 
@@ -794,15 +845,15 @@ body {
 }
 
 /* ========================================
-   Audition
+   Brand / About
    ======================================== */
 
-/* Intro */
-.audition-intro {
-  margin-bottom: 64px;
+/* Brand Story */
+.brand-story {
+  margin-bottom: 72px;
 }
 
-.audition-intro-text {
+.brand-story-text {
   font-size: clamp(15px, 1.3vw, 17px);
   color: var(--color-text-secondary);
   line-height: 2.4;
@@ -810,182 +861,83 @@ body {
   word-break: keep-all;
 }
 
-.audition-intro-sub {
+.brand-story-sub {
   margin-top: 20px;
   opacity: 0.7;
 }
 
-/* Section Blocks */
-.audition-section-block {
+/* Brand Philosophy */
+.brand-philosophy {
   padding: 48px 0;
   border-top: 1px solid var(--color-border);
 }
 
-.audition-block-title {
-  font-size: 13px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  font-weight: 600;
-  margin-bottom: 32px;
-}
-
-/* Process Steps */
-.audition-process {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0;
-}
-
-.audition-step {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.audition-step-num {
-  font-size: 10px;
-  color: var(--color-accent);
-  opacity: 0.4;
-  font-variant-numeric: tabular-nums;
-  font-weight: 400;
-}
-
-.audition-step-text {
-  font-size: 14px;
-  color: var(--color-text-primary);
-  font-weight: 300;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-}
-
-.audition-step-arrow {
-  color: var(--color-text-muted);
-  opacity: 0.3;
-  margin: 0 12px;
-  flex-shrink: 0;
-}
-
-.audition-step-note {
-  margin-top: 20px;
-  font-size: 12px;
-  color: var(--color-text-muted);
-  font-weight: 300;
-  letter-spacing: 0.3px;
-}
-
-@media (max-width: 768px) {
-  .audition-process {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-  }
-  .audition-step {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--color-border);
-    width: 100%;
-  }
-  .audition-step:last-child {
-    border-bottom: none;
-  }
-  .audition-step-arrow {
-    display: none;
-  }
-}
-
-/* Apply Grid */
-.audition-apply-grid {
+.brand-philosophy-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 40px;
 }
 
 @media (max-width: 768px) {
-  .audition-apply-grid {
+  .brand-philosophy-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
   }
 }
 
-.audition-apply-card {
-  /* intentionally minimal */
+.brand-value-card {
+  padding: 32px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.audition-apply-label {
-  font-size: 13px;
-  color: var(--color-text-primary);
-  font-weight: 400;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--color-border);
+.brand-value-card:hover {
+  border-color: rgba(212, 180, 133, 0.2);
+  background: rgba(212, 180, 133, 0.03);
+  transform: translateY(-4px);
 }
 
-.audition-apply-list {
-  list-style: none;
-  padding: 0;
-}
-
-.audition-apply-list li {
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  padding: 10px 0 10px 18px;
-  position: relative;
-  font-weight: 300;
-  line-height: 1.6;
-  word-break: keep-all;
-}
-
-.audition-apply-list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 5px;
-  height: 1px;
-  background: var(--color-accent);
-  opacity: 0.5;
-  transform: translateY(-50%);
-}
-
-.audition-apply-steps {
-  list-style: none;
-  padding: 0;
-  counter-reset: apply-step;
-}
-
-.audition-apply-steps li {
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  padding: 10px 0 10px 28px;
-  position: relative;
-  font-weight: 300;
-  line-height: 1.8;
-  word-break: keep-all;
-  counter-increment: apply-step;
-}
-
-.audition-apply-steps li::before {
-  content: counter(apply-step);
-  position: absolute;
-  left: 0;
-  top: 10px;
+.brand-value-number {
   font-size: 10px;
   color: var(--color-accent);
-  opacity: 0.5;
+  opacity: 0.4;
   font-variant-numeric: tabular-nums;
-  width: 18px;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+
+.brand-value-text {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  font-weight: 300;
+  line-height: 1.9;
+  word-break: keep-all;
+  letter-spacing: 0.3px;
+}
+
+/* Brand Slogan */
+.brand-slogan {
+  margin-top: 48px;
+  padding: 48px 0;
+  border-top: 1px solid var(--color-border);
   text-align: center;
 }
 
-.audition-apply-steps li strong {
-  color: var(--color-text-primary);
-  font-weight: 400;
+.brand-slogan-text {
+  font-size: clamp(14px, 1.2vw, 16px);
+  color: var(--color-accent);
+  font-weight: 300;
+  letter-spacing: 3px;
+  line-height: 2.6;
+  font-style: italic;
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-/* Email CTA */
-.audition-email-block {
+/* Brand Email CTA */
+.brand-email-block {
   display: inline-flex;
   align-items: center;
   gap: 14px;
@@ -1003,35 +955,20 @@ body {
   cursor: pointer;
 }
 
-.audition-email-block:hover {
+.brand-email-block:hover {
   background: rgba(212, 180, 133, 0.1);
   border-color: rgba(212, 180, 133, 0.25);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(212, 180, 133, 0.08);
 }
 
-.audition-email-block svg {
+.brand-email-block svg {
   opacity: 0.6;
   transition: opacity 0.3s;
 }
 
-.audition-email-block:hover svg {
+.brand-email-block:hover svg {
   opacity: 1;
-}
-
-/* Privacy Note */
-.audition-privacy {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--color-border);
-}
-
-.audition-privacy p {
-  font-size: 12px;
-  color: var(--color-text-muted);
-  line-height: 2;
-  font-weight: 300;
-  letter-spacing: 0.3px;
 }
 
 /* ========================================
