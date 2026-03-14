@@ -16,20 +16,10 @@ export default function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(145deg, #1a2e24 0%, #1f3a2d 40%, #1a2e24 100%)",
+          background: "#1a2e24",
           position: "relative",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            top: "30%",
-            left: "35%",
-            width: "30%",
-            height: "40%",
-            background: "radial-gradient(ellipse, rgba(201, 169, 110, 0.08) 0%, transparent 70%)",
-          }}
-        />
         <div
           style={{
             position: "absolute",
@@ -77,7 +67,7 @@ export default function Image() {
             color: "#c9a96e",
             letterSpacing: "8px",
             marginTop: "24px",
-            opacity: 0.7,
+            opacity: 0.8,
             fontStyle: "italic",
           }}
         >
