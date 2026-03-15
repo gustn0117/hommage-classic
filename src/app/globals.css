@@ -1454,6 +1454,46 @@ body {
 }
 
 /* ========================================
+   Category Tabs
+   ======================================== */
+.cat-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  padding-top: 72px; /* account for fixed nav */
+}
+
+.cat-tab {
+  padding: 18px 32px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 4px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.cat-tab:hover {
+  color: var(--color-text-primary);
+}
+
+.cat-tab.active {
+  color: var(--color-green);
+  border-bottom-color: var(--color-green);
+}
+
+@media (max-width: 640px) {
+  .cat-tabs { flex-wrap: wrap; }
+  .cat-tab { padding: 14px 20px; font-size: 10px; letter-spacing: 2px; }
+}
+
+/* ========================================
    Divider
    ======================================== */
 .section-divider {

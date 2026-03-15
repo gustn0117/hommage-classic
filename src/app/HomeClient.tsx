@@ -13,21 +13,28 @@ function renderLines(text: string) {
 const PRODUCTS = [
   {
     name: "REED DIFFUSER",
-    nameKo: "리드 디퓨저",
+    nameKo: "디퓨저",
     image: "/images/diffuser1.jpg",
     subImage: "/images/diffuser2.jpg",
     desc: "자연에서 영감을 받은 섬세한 향이 공간을 조용히 채워갑니다. 정직한 원료만을 담아 만든 오마주클래식의 시그니처 디퓨저.",
   },
   {
+    name: "AROMA CANDLE",
+    nameKo: "캔들",
+    image: "/images/candle1.jpg",
+    subImage: "/images/giftset1.jpg",
+    desc: "소이 왁스와 천연 에센셜 오일로 만든 은은하고 깊은 향의 캔들. 불을 켜는 순간, 공간이 달라집니다.",
+  },
+  {
     name: "NATURAL SOAP",
-    nameKo: "내추럴 솝",
+    nameKo: "솝",
     image: "/images/soap1.jpg",
-    subImage: "/images/soap2.jpg",
+    subImage: "/images/detail1.jpg",
     desc: "피부에 닿는 순간부터 다른 것을 느낄 수 있도록. 식물성 오일과 천연 향료로 완성한 부드럽고 깊은 세정의 경험.",
   },
   {
     name: "GIFT SET",
-    nameKo: "기프트 세트",
+    nameKo: "기프트세트",
     image: "/images/giftset1.jpg",
     subImage: "/images/candle1.jpg",
     desc: "소중한 사람에게 전하는 경의. 정성스럽게 큐레이션한 향과 케어 아이템을 하나의 세트로 담았습니다.",
