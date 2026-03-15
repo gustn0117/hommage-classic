@@ -1,7 +1,7 @@
 import "./admin.css";
 
 export const metadata = {
-  title: "관리자 - MOOD K ENTERTAINMENT",
+  title: "관리자 - HOMMAGE CLASSIC",
 };
 
 export default function AdminLayout({
