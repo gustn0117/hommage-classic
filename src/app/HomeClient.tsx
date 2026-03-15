@@ -218,26 +218,12 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
 
       {/* Hero Section */}
       <section id="home" className="hero-section">
-        {(() => {
-          const ytId = heroVideo?.type === "youtube" && heroVideo?.url ? getYouTubeId(heroVideo.url) : null;
-          if (ytId) {
-            return (
-              <div className="hero-video hero-youtube-wrap">
-                <iframe
-                  className="hero-youtube-bg"
-                  src={`https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&playlist=${ytId}&modestbranding=1&iv_load_policy=3&disablekb=1`}
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  title="Hero background"
-                />
-              </div>
-            );
-          }
-          if (heroVideo?.type === "local" && heroVideo?.url) {
-            return <video className="hero-video hero-video-bg" autoPlay muted loop playsInline src={heroVideo.url} />;
-          }
-          return null;
-        })()}
+        <img
+          src="/images/hero.jpg"
+          alt="HOMMAGE CLASSIC"
+          className="hero-video hero-video-bg"
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
         <div className="hero-bg-grain" />
         <div className="hero-overlay" />
         <div className="hero-content">
@@ -362,22 +348,25 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
                 {
                   name: "REED DIFFUSER",
                   nameKo: "리드 디퓨저",
+                  image: "/images/diffuser1.jpg",
                   desc: "자연에서 영감을 받은 섬세한 향이\n공간을 조용히 채워갑니다.\n정직한 원료만을 담아 만든\n오마주클래식의 시그니처 디퓨저.",
                 },
                 {
                   name: "NATURAL SOAP",
                   nameKo: "내추럴 솝",
+                  image: "/images/soap1.jpg",
                   desc: "피부에 닿는 순간부터 다른 것을 느낄 수 있도록.\n식물성 오일과 천연 향료로 완성한\n부드럽고 깊은 세정의 경험.",
                 },
                 {
                   name: "GIFT SET",
                   nameKo: "기프트 세트",
+                  image: "/images/giftset1.jpg",
                   desc: "소중한 사람에게 전하는 경의.\n정성스럽게 큐레이션한 향과 케어 아이템을\n하나의 세트로 담았습니다.",
                 },
               ].map((item, idx) => (
                 <div key={idx} className={`collection-card reveal-scale reveal-delay-${idx + 1}`}>
-                  <div className="collection-card-image img-placeholder">
-                    <span>{item.name}</span>
+                  <div className="collection-card-image" style={{ overflow: "hidden" }}>
+                    <img src={item.image} alt={item.nameKo} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} />
                   </div>
                   <div className="collection-card-info">
                     <div className="collection-card-name">{item.name}</div>
@@ -404,13 +393,18 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
             </div>
           </div>
 
-          <div className="brand-story reveal">
-            <p className="brand-story-text">
-              {renderLines(brandInfo.introText1)}
-            </p>
-            <p className="brand-story-text brand-story-sub">
-              {renderLines(brandInfo.introText2)}
-            </p>
+          <div className="brand-story reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "center" }}>
+            <div>
+              <p className="brand-story-text">
+                {renderLines(brandInfo.introText1)}
+              </p>
+              <p className="brand-story-text brand-story-sub">
+                {renderLines(brandInfo.introText2)}
+              </p>
+            </div>
+            <div style={{ overflow: "hidden", borderRadius: "10px" }}>
+              <img src="/images/about.jpg" alt="HOMMAGE CLASSIC 브랜드" style={{ width: "100%", aspectRatio: "4/5", objectFit: "cover" }} />
+            </div>
           </div>
 
           <div className="brand-philosophy reveal reveal-delay-1">
