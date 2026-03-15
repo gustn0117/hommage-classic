@@ -3,11 +3,6 @@
 import { useState, useEffect, useRef, useCallback, Fragment } from "react";
 import type { CompanyInfo, BrandInfo, HeroVideo, SnsLinks } from "@/lib/types";
 
-function getYouTubeId(url: string): string | null {
-  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([^?&#]+)/);
-  return m ? m[1] : null;
-}
-
 function renderLines(text: string) {
   return text.split("\n").map((line, i) => (
     <Fragment key={i}>{i > 0 && <br />}{line}</Fragment>
@@ -18,10 +13,10 @@ interface Product {
   id: string;
   name_ko: string;
   name_en: string;
-  birth_date: string; // used as category (e.g. "Reed Diffuser")
+  birth_date: string;
   height: string;
   weight: string;
-  specialty: string; // used as short description
+  specialty: string;
   profile_image: string;
   photos: string[];
   filmography: { year: string; category: string; title: string; role: string }[];
@@ -53,64 +48,64 @@ const NAV_ITEMS = [
 
 const SECTION_IDS = ["home", "collection", "about", "notice", "contact"];
 
+const DEFAULT_PRODUCTS = [
+  {
+    name: "REED DIFFUSER",
+    nameKo: "리드 디퓨저",
+    image: "/images/diffuser1.jpg",
+    subImage: "/images/diffuser2.jpg",
+    desc: "자연에서 영감을 받은 섬세한 향이 공간을 조용히 채워갑니다. 정직한 원료만을 담아 만든 오마주클래식의 시그니처 디퓨저.",
+  },
+  {
+    name: "NATURAL SOAP",
+    nameKo: "내추럴 솝",
+    image: "/images/soap1.jpg",
+    subImage: "/images/soap2.jpg",
+    desc: "피부에 닿는 순간부터 다른 것을 느낄 수 있도록. 식물성 오일과 천연 향료로 완성한 부드럽고 깊은 세정의 경험.",
+  },
+  {
+    name: "GIFT SET",
+    nameKo: "기프트 세트",
+    image: "/images/giftset1.jpg",
+    subImage: "/images/candle1.jpg",
+    desc: "소중한 사람에게 전하는 경의. 정성스럽게 큐레이션한 향과 케어 아이템을 하나의 세트로 담았습니다.",
+  },
+];
+
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-          }
-        });
-      },
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }),
       { threshold: 0.15 }
     );
-
-    const revealSelectors = ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur";
-    const children = el.querySelectorAll(revealSelectors);
-    children.forEach((child) => observer.observe(child));
-
+    el.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur")
+      .forEach((child) => observer.observe(child));
     return () => observer.disconnect();
   }, []);
-
   return ref;
 }
 
 function useScrollSpy() {
   const [activeSection, setActiveSection] = useState("home");
-
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActiveSection(e.target.id); }),
       { threshold: 0.3, rootMargin: "-80px 0px -40% 0px" }
     );
-
-    SECTION_IDS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
+    SECTION_IDS.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
     return () => observer.disconnect();
   }, []);
-
   return activeSection;
 }
 
-export default function HomeClient({ products, notices, companyInfo, brandInfo, heroVideo, snsLinks }: Props) {
+export default function HomeClient({ products, notices, companyInfo, brandInfo, snsLinks }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openNotice, setOpenNotice] = useState<number | null>(null);
+  const [featuredIdx, setFeaturedIdx] = useState(0);
   const revealRef = useReveal();
   const activeSection = useScrollSpy();
 
@@ -130,6 +125,8 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
     }
   }, []);
 
+  const featured = DEFAULT_PRODUCTS[featuredIdx];
+
   return (
     <div ref={revealRef}>
       {/* Navigation */}
@@ -137,13 +134,9 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
         <div className="section-container">
           <div className="nav-inner">
             <button onClick={() => scrollTo("home")} className="nav-logo">
-              HOMMAGE
+              HOMMAGE CLASSIC
             </button>
-
-            <div
-              style={{ display: "flex", gap: "40px", alignItems: "center" }}
-              className="desktop-nav"
-            >
+            <div style={{ display: "flex", gap: "40px", alignItems: "center" }} className="desktop-nav">
               {NAV_ITEMS.map((item) => (
                 <button
                   key={item.id}
@@ -154,30 +147,13 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
                 </button>
               ))}
             </div>
-
             <button
               className="mobile-hamburger"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                display: "none",
-                flexDirection: "column",
-                gap: "5px",
-                padding: "8px",
-              }}
+              style={{ background: "none", border: "none", cursor: "pointer", display: "none", flexDirection: "column", gap: "5px", padding: "8px" }}
             >
               {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  style={{
-                    width: "20px",
-                    height: "1px",
-                    background: "var(--color-text-secondary)",
-                    display: "block",
-                  }}
-                />
+                <span key={i} style={{ width: "20px", height: "1px", background: scrolled ? "var(--color-text-primary)" : "#f0ebe3", display: "block" }} />
               ))}
             </button>
           </div>
@@ -186,63 +162,33 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
 
       {mobileMenuOpen && (
         <div className="mobile-menu">
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            style={{
-              position: "absolute",
-              top: "24px",
-              right: "24px",
-              background: "none",
-              border: "none",
-              color: "var(--color-text-secondary)",
-              fontSize: "24px",
-              cursor: "pointer",
-            }}
-          >
+          <button onClick={() => setMobileMenuOpen(false)} style={{ position: "absolute", top: "24px", right: "24px", background: "none", border: "none", color: "#f0ebe3", fontSize: "24px", cursor: "pointer" }}>
             ✕
           </button>
           {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                scrollTo(item.id);
-              }}
-            >
+            <a key={item.id} href={`#${item.id}`} onClick={(e) => { e.preventDefault(); scrollTo(item.id); }}>
               {item.label}
             </a>
           ))}
         </div>
       )}
 
-      {/* Hero Section */}
+      {/* ===== HERO — Full-screen image with centered text ===== */}
       <section id="home" className="hero-section">
-        <img
-          src="/images/hero.jpg"
-          alt="HOMMAGE CLASSIC"
-          className="hero-video hero-video-bg"
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
+        <img src="/images/hero.jpg" alt="" className="hero-video hero-video-bg" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         <div className="hero-bg-grain" />
         <div className="hero-overlay" />
         <div className="hero-content">
           <h1 className="hero-title">
-            <span className="hero-title-main">HOMMAGE</span>
-            <br />
-            <span className="hero-title-sub">CLASSIC</span>
+            <span className="hero-title-main" style={{ fontSize: "clamp(28px, 6vw, 56px)", fontWeight: 300, letterSpacing: "clamp(8px, 3vw, 28px)" }}>
+              CRAFTED WITH SINCERE HANDS
+            </span>
           </h1>
-          <p className="hero-tagline">Crafted with Sincere Hands</p>
           <div className="hero-divider" />
-          <p className="hero-description">
-            정직한 손으로 만들어진 향,
+          <p className="hero-description" style={{ letterSpacing: "2px", lineHeight: 2 }}>
+            정직한 마음으로 만든 향으로,
             <br />
-            조용히 삶을 정돈하는 시간
-          </p>
-          <p className="hero-description hero-description-sub">
-            가장 중요한 것, 나 자신에게
-            <br />
-            돌아가게 하는 향
+            사람을 가장 본질적인 순간으로 돌려보내는 브랜드.
           </p>
         </div>
         <button className="scroll-indicator" onClick={() => scrollTo("collection")} aria-label="Scroll down">
@@ -254,8 +200,45 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
         </button>
       </section>
 
-      {/* Collection Section */}
-      <section id="collection" className="section-glow" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
+      {/* ===== FEATURED SPLIT — Left: large image + text overlay, Right: product card ===== */}
+      <section className="featured-split">
+        {/* Left: large image with text overlay */}
+        <div className="featured-left">
+          <img src={featured.image} alt={featured.nameKo} className="featured-left-img" />
+          <div className="featured-left-overlay">
+            <h2 className="featured-left-title">
+              HOMMAGE CLASSIC
+              <br />
+              {featured.name}
+            </h2>
+            <p className="featured-left-desc">{featured.desc}</p>
+          </div>
+        </div>
+        {/* Right: product card with image */}
+        <div className="featured-right">
+          <div className="featured-right-img-wrap">
+            <img src={featured.subImage} alt={featured.nameKo} className="featured-right-img" />
+          </div>
+          <div className="featured-right-info">
+            <h3 className="featured-right-name">HOMMAGE CLASSIC {featured.name}</h3>
+            <p className="featured-right-nameKo">{featured.nameKo}</p>
+          </div>
+          {/* Dots */}
+          <div className="featured-dots">
+            {DEFAULT_PRODUCTS.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setFeaturedIdx(i)}
+                className={`featured-dot ${i === featuredIdx ? "active" : ""}`}
+                aria-label={`Product ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== COLLECTION — Products from DB or default grid ===== */}
+      <section id="collection" style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
           <div className="reveal-blur">
             <div className="section-title-wrap">
@@ -274,22 +257,14 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
                     <div className="product-name-ko">{product.name_ko}</div>
                   </div>
                 </div>
-
                 <div className="product-profile-grid">
                   <div className="reveal-scale">
                     {product.profile_image ? (
-                      <img
-                        className="product-main-photo"
-                        src={product.profile_image}
-                        alt={product.name_ko}
-                      />
+                      <img className="product-main-photo" src={product.profile_image} alt={product.name_ko} />
                     ) : (
-                      <div className="product-main-photo img-placeholder">
-                        PRODUCT PHOTO
-                      </div>
+                      <div className="product-main-photo img-placeholder">PRODUCT</div>
                     )}
                   </div>
-
                   <div className="reveal-right reveal-delay-1">
                     <div className="product-info-single">
                       <div className="product-info-cell">
@@ -297,13 +272,9 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
                         <div className="product-info-value">{product.birth_date}</div>
                       </div>
                     </div>
-
                     {product.specialty && (
-                      <div className="product-description-text">
-                        {renderLines(product.specialty)}
-                      </div>
+                      <div className="product-description-text">{renderLines(product.specialty)}</div>
                     )}
-
                     {product.filmography.length > 0 && (
                       <div>
                         <h3 className="product-detail-header">Details</h3>
@@ -329,7 +300,6 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
                     )}
                   </div>
                 </div>
-
                 {product.photos.length > 0 && (
                   <div className="product-photo-grid">
                     {product.photos.map((url, idx) => (
@@ -342,36 +312,18 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
               </div>
             ))
           ) : (
-            /* Default static collection when no DB products */
-            <div className="collection-showcase">
-              {[
-                {
-                  name: "REED DIFFUSER",
-                  nameKo: "리드 디퓨저",
-                  image: "/images/diffuser1.jpg",
-                  desc: "자연에서 영감을 받은 섬세한 향이\n공간을 조용히 채워갑니다.\n정직한 원료만을 담아 만든\n오마주클래식의 시그니처 디퓨저.",
-                },
-                {
-                  name: "NATURAL SOAP",
-                  nameKo: "내추럴 솝",
-                  image: "/images/soap1.jpg",
-                  desc: "피부에 닿는 순간부터 다른 것을 느낄 수 있도록.\n식물성 오일과 천연 향료로 완성한\n부드럽고 깊은 세정의 경험.",
-                },
-                {
-                  name: "GIFT SET",
-                  nameKo: "기프트 세트",
-                  image: "/images/giftset1.jpg",
-                  desc: "소중한 사람에게 전하는 경의.\n정성스럽게 큐레이션한 향과 케어 아이템을\n하나의 세트로 담았습니다.",
-                },
-              ].map((item, idx) => (
-                <div key={idx} className={`collection-card reveal-scale reveal-delay-${idx + 1}`}>
-                  <div className="collection-card-image" style={{ overflow: "hidden" }}>
-                    <img src={item.image} alt={item.nameKo} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} />
+            <div className="collection-grid">
+              {DEFAULT_PRODUCTS.map((item, idx) => (
+                <div key={idx} className={`collection-item reveal-scale reveal-delay-${idx + 1}`}>
+                  <div className="collection-item-img-wrap">
+                    <img src={item.image} alt={item.nameKo} className="collection-item-img" />
+                    <div className="collection-item-hover">
+                      <span>{item.name}</span>
+                    </div>
                   </div>
-                  <div className="collection-card-info">
-                    <div className="collection-card-name">{item.name}</div>
-                    <div className="collection-card-name-ko">{item.nameKo}</div>
-                    <p className="collection-card-desc">{renderLines(item.desc)}</p>
+                  <div className="collection-item-info">
+                    <h3 className="collection-item-name">{item.name}</h3>
+                    <p className="collection-item-nameKo">{item.nameKo}</p>
                   </div>
                 </div>
               ))}
@@ -380,10 +332,18 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
         </div>
       </section>
 
-      <div className="section-divider" />
+      {/* ===== BRAND STORY — Full-width image band ===== */}
+      <section className="brand-band">
+        <img src="/images/candle2.jpg" alt="" className="brand-band-img" />
+        <div className="brand-band-overlay">
+          <blockquote className="brand-band-text">
+            {renderLines(brandInfo.slogan)}
+          </blockquote>
+        </div>
+      </section>
 
-      {/* About Section */}
-      <section id="about" className="section-glow" style={{ padding: "140px 0", background: "var(--color-bg-secondary)" }}>
+      {/* ===== ABOUT ===== */}
+      <section id="about" style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
           <div className="reveal-blur">
             <div className="section-title-wrap">
@@ -393,53 +353,39 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
             </div>
           </div>
 
-          <div className="brand-story reveal" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "center" }}>
-            <div>
-              <p className="brand-story-text">
-                {renderLines(brandInfo.introText1)}
-              </p>
-              <p className="brand-story-text brand-story-sub">
-                {renderLines(brandInfo.introText2)}
-              </p>
+          <div className="about-split reveal">
+            <div className="about-split-img">
+              <img src="/images/about.jpg" alt="HOMMAGE CLASSIC" />
             </div>
-            <div style={{ overflow: "hidden", borderRadius: "10px" }}>
-              <img src="/images/about.jpg" alt="HOMMAGE CLASSIC 브랜드" style={{ width: "100%", aspectRatio: "4/5", objectFit: "cover" }} />
+            <div className="about-split-text">
+              <p className="brand-story-text">{renderLines(brandInfo.introText1)}</p>
+              <p className="brand-story-text brand-story-sub">{renderLines(brandInfo.introText2)}</p>
+              <div className="about-values">
+                {brandInfo.values.map((value, i) => (
+                  <div key={i} className="about-value-item">
+                    <span className="about-value-num">0{i + 1}</span>
+                    <span className="about-value-text">{value}</span>
+                  </div>
+                ))}
+              </div>
+              {brandInfo.email && (
+                <a href={`mailto:${brandInfo.email}`} className="brand-email-block">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="M22 4L12 13 2 4" />
+                  </svg>
+                  <span>{brandInfo.email}</span>
+                </a>
+              )}
             </div>
           </div>
-
-          <div className="brand-philosophy reveal reveal-delay-1">
-            <div className="brand-philosophy-grid">
-              {brandInfo.values.map((value, i) => (
-                <div key={i} className="brand-value-card">
-                  <div className="brand-value-number">0{i + 1}</div>
-                  <div className="brand-value-text">{value}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="brand-slogan reveal reveal-delay-2">
-            <blockquote className="brand-slogan-text">
-              {renderLines(brandInfo.slogan)}
-            </blockquote>
-          </div>
-
-          {brandInfo.email && (
-            <a href={`mailto:${brandInfo.email}`} className="brand-email-block reveal-scale">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="M22 4L12 13 2 4" />
-              </svg>
-              <span>{brandInfo.email}</span>
-            </a>
-          )}
         </div>
       </section>
 
       <div className="section-divider" />
 
-      {/* Notice Section */}
-      <section id="notice" style={{ padding: "140px 0", background: "var(--color-bg-primary)" }}>
+      {/* ===== NOTICE ===== */}
+      <section id="notice" style={{ padding: "120px 0", background: "var(--color-bg-secondary)" }}>
         <div className="section-container">
           <div className="reveal-blur">
             <div className="section-title-wrap">
@@ -448,35 +394,20 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
               <span className="section-title-bar" />
             </div>
           </div>
-
           <div className="reveal">
-            {notices.length > 0 ? (
-              notices.map((notice) => (
-                <div
-                  key={notice.id}
-                  className="notice-item"
-                  onClick={() => setOpenNotice(openNotice === notice.id ? null : notice.id)}
-                >
-                  <div className="notice-date">{notice.date}</div>
-                  <div className="notice-title-text">{notice.title}</div>
-                  <svg
-                    className={`notice-chevron ${openNotice === notice.id ? "open" : ""}`}
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M4 6l4 4 4-4" />
-                  </svg>
-                  <div className={`notice-content ${openNotice === notice.id ? "open" : ""}`}>
-                    <div className="notice-content-inner" style={{ whiteSpace: "pre-line" }}>{notice.content}</div>
-                  </div>
+            {notices.length > 0 ? notices.map((notice) => (
+              <div key={notice.id} className="notice-item" onClick={() => setOpenNotice(openNotice === notice.id ? null : notice.id)}>
+                <div className="notice-date">{notice.date}</div>
+                <div className="notice-title-text">{notice.title}</div>
+                <svg className={`notice-chevron ${openNotice === notice.id ? "open" : ""}`} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M4 6l4 4 4-4" />
+                </svg>
+                <div className={`notice-content ${openNotice === notice.id ? "open" : ""}`}>
+                  <div className="notice-content-inner" style={{ whiteSpace: "pre-line" }}>{notice.content}</div>
                 </div>
-              ))
-            ) : (
-              <p style={{ color: "var(--color-text-muted)", fontSize: "14px", fontWeight: 300 }}>
-                등록된 공지사항이 없습니다.
-              </p>
+              </div>
+            )) : (
+              <p style={{ color: "var(--color-text-muted)", fontSize: "14px", fontWeight: 300 }}>등록된 공지사항이 없습니다.</p>
             )}
           </div>
         </div>
@@ -484,8 +415,8 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
 
       <div className="section-divider" />
 
-      {/* Contact Section */}
-      <section id="contact" style={{ padding: "140px 0", background: "var(--color-bg-secondary)" }}>
+      {/* ===== CONTACT ===== */}
+      <section id="contact" style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
           <div className="reveal-blur">
             <div className="section-title-wrap">
@@ -494,7 +425,6 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
               <span className="section-title-bar" />
             </div>
           </div>
-
           <div className="contact-grid">
             <div className="reveal-left">
               <div className="contact-info-item">
@@ -505,9 +435,7 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
                 <div className="contact-info-label">Address</div>
                 <div>
                   <div className="contact-info-value">{companyInfo.address}</div>
-                  <div style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "4px" }}>
-                    {companyInfo.addressDetail}
-                  </div>
+                  <div style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "4px" }}>{companyInfo.addressDetail}</div>
                 </div>
               </div>
               <div className="contact-info-item">
@@ -519,7 +447,6 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
                 <div className="contact-info-value">{companyInfo.businessNumber}</div>
               </div>
             </div>
-
             <div className="reveal-right reveal-delay-1">
               <div className="contact-map-wrap">
                 <iframe
@@ -545,9 +472,7 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
               {snsLinks.instagram && (
                 <a href={snsLinks.instagram} target="_blank" rel="noopener noreferrer" className="footer-sns-link" aria-label="Instagram">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="2" width="20" height="20" rx="5" />
-                    <circle cx="12" cy="12" r="5" />
-                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                    <rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
                   </svg>
                 </a>
               )}
@@ -567,9 +492,7 @@ export default function HomeClient({ products, notices, companyInfo, brandInfo, 
               )}
             </div>
           )}
-          <p className="footer-text">
-            &copy; 2026 {companyInfo.name}. All Rights Reserved.
-          </p>
+          <p className="footer-text">&copy; 2026 {companyInfo.name}. All Rights Reserved.</p>
         </div>
       </footer>
     </div>

@@ -481,6 +481,334 @@ body {
 }
 
 /* ========================================
+   Featured Split (KARMAKAMET style)
+   ======================================== */
+.featured-split {
+  display: grid;
+  grid-template-columns: 65fr 35fr;
+  min-height: 85vh;
+}
+
+@media (max-width: 900px) {
+  .featured-split {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+}
+
+.featured-left {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+.featured-left-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featured-left:hover .featured-left-img {
+  transform: scale(1.03);
+}
+
+.featured-left-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 70%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 56px;
+  z-index: 2;
+}
+
+.featured-left-title {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.featured-left-desc {
+  font-size: clamp(13px, 1.1vw, 15px);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.9;
+  font-weight: 300;
+  max-width: 520px;
+  word-break: keep-all;
+}
+
+.featured-right {
+  background: var(--color-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  gap: 28px;
+}
+
+.featured-right-img-wrap {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.featured-right-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featured-right-img-wrap:hover .featured-right-img {
+  transform: scale(1.05);
+}
+
+.featured-right-info {
+  text-align: center;
+}
+
+.featured-right-name {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+}
+
+.featured-right-nameKo {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+  letter-spacing: 3px;
+}
+
+.featured-dots {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.featured-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+
+.featured-dot.active {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  transform: scale(1.2);
+}
+
+.featured-dot:hover {
+  border-color: var(--color-green);
+}
+
+/* ========================================
+   Collection Grid (new style)
+   ======================================== */
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .collection-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+.collection-item {
+  cursor: pointer;
+}
+
+.collection-item-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+}
+
+.collection-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collection-item-img-wrap:hover .collection-item-img {
+  transform: scale(1.06);
+}
+
+.collection-item-hover {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 46, 36, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.collection-item-img-wrap:hover .collection-item-hover {
+  opacity: 1;
+}
+
+.collection-item-hover span {
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 6px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.collection-item-info {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.collection-item-name {
+  font-size: 13px;
+  letter-spacing: 4px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+}
+
+.collection-item-nameKo {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+/* ========================================
+   Brand Band (full-width image with slogan)
+   ======================================== */
+.brand-band {
+  position: relative;
+  height: 50vh;
+  min-height: 360px;
+  overflow: hidden;
+}
+
+.brand-band-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+.brand-band-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 46, 36, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.brand-band-text {
+  font-size: clamp(14px, 1.4vw, 18px);
+  color: #f0ebe3;
+  font-weight: 300;
+  letter-spacing: 4px;
+  line-height: 2.8;
+  text-align: center;
+  font-style: italic;
+  max-width: 600px;
+}
+
+/* ========================================
+   About Split
+   ======================================== */
+.about-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .about-split {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.about-split-img {
+  overflow: hidden;
+}
+
+.about-split-img img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-split-img:hover img {
+  transform: scale(1.03);
+}
+
+.about-split-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.about-values {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 32px;
+}
+
+.about-value-item {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.about-value-num {
+  font-size: 10px;
+  color: var(--color-accent);
+  letter-spacing: 2px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.about-value-text {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  font-weight: 300;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+
+/* ========================================
    Product (Collection)
    ======================================== */
 .product-block {
