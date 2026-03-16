@@ -153,10 +153,12 @@ export default function HomeClient({ brandInfo }: Props) {
             <p className="featured-left-desc">{featured.desc}</p>
             <Link href="/collection" className="featured-left-btn">
               VIEW MORE
+              <span className="featured-left-btn-arrow">→</span>
             </Link>
           </div>
         </div>
         <div className="featured-right">
+          <span className="featured-right-label">NOW SHOWING</span>
           <div className="featured-right-img-wrap">
             <img src={featured.subImage} alt={featured.nameKo} className="featured-right-img" />
           </div>
@@ -176,6 +178,37 @@ export default function HomeClient({ brandInfo }: Props) {
         </div>
       </section>
 
+      {/* ===== BRAND PHILOSOPHY ===== */}
+      <section className="home-philosophy">
+        <div className="section-container">
+          <div className="home-philosophy-grid">
+            <div className="home-philosophy-left reveal-left">
+              <span className="section-number">OUR PHILOSOPHY</span>
+              <h2 className="home-philosophy-title">정직한 손으로<br />만든 향의 경의</h2>
+              <div className="home-philosophy-line" />
+              <p className="home-philosophy-desc">
+                오마주클래식은 좋은 마음, 정직한 마음을 향기에 담아 존경과 경의를 표현하는 브랜드입니다.
+                모든 제품은 대표가 직접 디자인하고 핸드메이드로 완성합니다.
+              </p>
+            </div>
+            <div className="home-philosophy-right reveal-right">
+              <div className="home-philosophy-stat">
+                <span className="home-philosophy-stat-num">14</span>
+                <span className="home-philosophy-stat-label">시그니처 향</span>
+              </div>
+              <div className="home-philosophy-stat">
+                <span className="home-philosophy-stat-num">100%</span>
+                <span className="home-philosophy-stat-label">핸드메이드</span>
+              </div>
+              <div className="home-philosophy-stat">
+                <span className="home-philosophy-stat-num">∞</span>
+                <span className="home-philosophy-stat-label">경의를 담아</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== BRAND BAND ===== */}
       <section className="brand-band reveal">
         <img src="/images/candle2.jpg" alt="" className="brand-band-img" />
@@ -187,10 +220,11 @@ export default function HomeClient({ brandInfo }: Props) {
       </section>
 
       {/* ===== QUICK COLLECTION PREVIEW ===== */}
-      <section style={{ padding: "100px 0", background: "var(--color-bg-primary)" }}>
+      <section className="home-collection-section">
         <div className="section-container" style={{ textAlign: "center" }}>
           <span className="section-number reveal">COLLECTION</span>
-          <h2 className="section-title reveal reveal-delay-1" style={{ marginBottom: "64px" }}>Our Products</h2>
+          <h2 className="section-title reveal reveal-delay-1">Our Products</h2>
+          <p className="home-collection-sub reveal reveal-delay-2">오마주클래식의 모든 컬렉션을 만나보세요</p>
           <div className="collection-grid">
             {PRODUCTS.map((item, idx) => (
               <Link href="/collection" key={idx} className={`collection-item reveal reveal-delay-${Math.min(idx + 1, 4)}`} style={{ textDecoration: "none" }}>

@@ -19,27 +19,38 @@ export default async function AboutPage() {
     <>
       <PageHero title="ABOUT" subtitle="오마주클래식의 브랜드 이야기" image="/images/about.jpg" />
 
-      <section style={{ padding: "100px 0", background: "var(--color-bg-primary)" }}>
+      {/* Brand Story */}
+      <section style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
           <div className="about-split">
             <div className="about-split-img">
               <img src="/images/candle2.jpg" alt="HOMMAGE CLASSIC" />
             </div>
             <div className="about-split-text">
-              <h2 style={{ fontSize: "11px", letterSpacing: "4px", color: "var(--color-accent)", fontWeight: 500, marginBottom: "24px", textTransform: "uppercase" as const }}>
-                Brand Story
-              </h2>
+              <span className="about-label">Brand Story</span>
+              <h2 className="about-heading">정직한 마음으로<br />만든 향의 경의</h2>
+              <div className="about-heading-line" />
               <p className="brand-story-text">{renderLines(brandInfo.introText1)}</p>
               <p className="brand-story-text brand-story-sub">{renderLines(brandInfo.introText2)}</p>
-              <div className="about-values">
-                {brandInfo.values.map((value, i) => (
-                  <div key={i} className="about-value-item">
-                    <span className="about-value-num">0{i + 1}</span>
-                    <span className="about-value-text">{value}</span>
-                  </div>
-                ))}
-              </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section style={{ padding: "100px 0", background: "var(--color-bg-secondary)" }}>
+        <div className="section-container">
+          <div style={{ textAlign: "center", marginBottom: "64px" }}>
+            <span className="about-label" style={{ display: "block" }}>Our Values</span>
+            <h2 className="section-title" style={{ display: "inline-block" }}>What We Believe</h2>
+          </div>
+          <div className="about-values-grid">
+            {brandInfo.values.map((value, i) => (
+              <div key={i} className="about-value-card">
+                <span className="about-value-card-num">0{i + 1}</span>
+                <p className="about-value-card-text">{value}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -55,11 +66,10 @@ export default async function AboutPage() {
       </section>
 
       {/* Brand Meaning */}
-      <section style={{ padding: "100px 0", background: "var(--color-bg-secondary)" }}>
+      <section style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container" style={{ maxWidth: "720px", textAlign: "center" }}>
-          <h2 style={{ fontSize: "11px", letterSpacing: "4px", color: "var(--color-accent)", fontWeight: 500, marginBottom: "32px", textTransform: "uppercase" as const }}>
-            The Meaning of Hommage
-          </h2>
+          <span className="about-label" style={{ display: "block" }}>The Meaning of Hommage</span>
+          <h2 className="section-title" style={{ display: "inline-block", marginBottom: "48px" }}>경의를 담다</h2>
           <p className="brand-story-text" style={{ textAlign: "center" }}>
             Hommage는 프랑스어로 &lsquo;존경&rsquo;, &lsquo;경의&rsquo;, &lsquo;헌정&rsquo;을 의미합니다.
             <br /><br />
@@ -72,7 +82,7 @@ export default async function AboutPage() {
             당신을 가장 본질적인 순간으로 돌려보냅니다.
           </p>
           {brandInfo.email && (
-            <div style={{ marginTop: "48px" }}>
+            <div style={{ marginTop: "56px" }}>
               <a href={`mailto:${brandInfo.email}`} className="brand-email-block">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
                   <rect x="2" y="4" width="20" height="16" rx="2" />

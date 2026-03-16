@@ -12,10 +12,12 @@ export default async function ContactPage() {
     <>
       <PageHero title="CONTACT" subtitle="오마주클래식에 문의하세요" image="/images/detail4.jpg" />
 
-      <section style={{ padding: "100px 0", background: "var(--color-bg-primary)" }}>
+      <section style={{ padding: "120px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container">
           <div className="contact-grid">
             <div>
+              <span className="about-label" style={{ display: "block", marginBottom: "32px" }}>Get in Touch</span>
+
               <div className="contact-info-item">
                 <div className="contact-info-label">Brand</div>
                 <div className="contact-info-value">{companyInfo.nameKo}</div>
@@ -29,12 +31,24 @@ export default async function ContactPage() {
               </div>
               <div className="contact-info-item">
                 <div className="contact-info-label">Email</div>
-                <div className="contact-info-value">{companyInfo.email}</div>
+                <div className="contact-info-value">
+                  <a href={`mailto:${companyInfo.email}`} style={{ color: "inherit", textDecoration: "none", transition: "color 0.3s" }}>
+                    {companyInfo.email}
+                  </a>
+                </div>
               </div>
               <div className="contact-info-item">
-                <div className="contact-info-label">Business No.</div>
+                <div className="contact-info-label">Business</div>
                 <div className="contact-info-value">{companyInfo.businessNumber}</div>
               </div>
+
+              <a href={`mailto:${companyInfo.email}`} className="brand-email-block" style={{ marginTop: "48px" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="M22 4L12 13 2 4" />
+                </svg>
+                <span>이메일 문의하기</span>
+              </a>
             </div>
             <div>
               <div className="contact-map-wrap">
