@@ -108,9 +108,9 @@ export default function HomeClient({ brandInfo }: Props) {
         <div className={`hero-content ${heroLoaded ? "loaded" : ""}`}>
           <div className="hero-brand-label">HOMMAGE CLASSIC</div>
           <h1 className="hero-headline">
-            CRAFTED WITH
+            Crafted with
             <br />
-            SINCERE HANDS
+            Sincere Hands
           </h1>
           <div className="hero-divider-line" />
           <p className="hero-desc">
