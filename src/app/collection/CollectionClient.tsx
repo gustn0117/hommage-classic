@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, Fragment } from "react";
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 
 function renderLines(text: string) {
@@ -65,13 +66,13 @@ export default function CollectionClient({ products }: { products: Product[] }) 
         <div className="section-container">
           {filtered.map((product, idx) => (
             <div key={product.id} className="product-block">
-              <div className="product-name-wrap">
+              <Link href={`/collection/${product.id}`} className="product-name-wrap" style={{ textDecoration: "none", display: "block" }}>
                 <div className="product-name-en">{product.name_en}</div>
                 <div className="product-name-ko">
                   {product.name_ko}
                   {product.height && <span style={{ marginLeft: "16px", color: "var(--color-accent)", fontSize: "12px" }}>{product.height}</span>}
                 </div>
-              </div>
+              </Link>
 
               <div className="product-profile-grid">
                 <div>

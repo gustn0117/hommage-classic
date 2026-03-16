@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import Link from "next/link";
 import type { BrandInfo } from "@/lib/types";
 
@@ -8,6 +8,30 @@ function renderLines(text: string) {
   return text.split("\n").map((line, i) => (
     <Fragment key={i}>{i > 0 && <br />}{line}</Fragment>
   ));
+}
+
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const targets = el.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-blur");
+    if (targets.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    targets.forEach((t) => observer.observe(t));
+    return () => observer.disconnect();
+  }, []);
+  return ref;
 }
 
 const PRODUCTS = [
@@ -48,6 +72,7 @@ interface Props {
 export default function HomeClient({ brandInfo }: Props) {
   const [featuredIdx, setFeaturedIdx] = useState(0);
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const revealRef = useScrollReveal();
 
   useEffect(() => {
     setHeroLoaded(true);
@@ -64,7 +89,7 @@ export default function HomeClient({ brandInfo }: Props) {
   const featured = PRODUCTS[featuredIdx];
 
   return (
-    <>
+    <div ref={revealRef}>
       {/* ===== HERO ===== */}
       <section className="hero-section">
         <div className="hero-slides">
@@ -119,7 +144,7 @@ export default function HomeClient({ brandInfo }: Props) {
       </section>
 
       {/* ===== FEATURED SPLIT ===== */}
-      <section className="featured-split">
+      <section className="featured-split reveal-scale">
         <div className="featured-left">
           <img src={featured.image} alt={featured.nameKo} className="featured-left-img" />
           <div className="featured-left-overlay">
@@ -152,7 +177,7 @@ export default function HomeClient({ brandInfo }: Props) {
       </section>
 
       {/* ===== BRAND BAND ===== */}
-      <section className="brand-band">
+      <section className="brand-band reveal">
         <img src="/images/candle2.jpg" alt="" className="brand-band-img" />
         <div className="brand-band-overlay">
           <blockquote className="brand-band-text">
@@ -164,11 +189,11 @@ export default function HomeClient({ brandInfo }: Props) {
       {/* ===== QUICK COLLECTION PREVIEW ===== */}
       <section style={{ padding: "100px 0", background: "var(--color-bg-primary)" }}>
         <div className="section-container" style={{ textAlign: "center" }}>
-          <span className="section-number">COLLECTION</span>
-          <h2 className="section-title" style={{ marginBottom: "64px" }}>Our Products</h2>
+          <span className="section-number reveal">COLLECTION</span>
+          <h2 className="section-title reveal reveal-delay-1" style={{ marginBottom: "64px" }}>Our Products</h2>
           <div className="collection-grid">
             {PRODUCTS.map((item, idx) => (
-              <Link href="/collection" key={idx} className="collection-item" style={{ textDecoration: "none" }}>
+              <Link href="/collection" key={idx} className={`collection-item reveal reveal-delay-${Math.min(idx + 1, 4)}`} style={{ textDecoration: "none" }}>
                 <div className="collection-item-img-wrap">
                   <img src={item.image} alt={item.nameKo} className="collection-item-img" />
                   <div className="collection-item-hover">
@@ -187,6 +212,6 @@ export default function HomeClient({ brandInfo }: Props) {
           </Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }
