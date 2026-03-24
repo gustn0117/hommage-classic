@@ -53,6 +53,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   const [activeImg, setActiveImg] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const scentRef = useRef<HTMLDivElement>(null);
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
   const hasScents = maxScents > 0;
   const allImages = [product.profile_image, ...product.photos].filter(Boolean);
@@ -65,12 +66,13 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
   useEffect(() => {
     if (!scentRef.current) return;
-    const targets = scentRef.current.querySelectorAll(".pd-scent-card");
+    const targets = scentRef.current.querySelectorAll("[data-scent-idx]");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
+            const idx = Number((entry.target as HTMLElement).dataset.scentIdx);
+            setVisibleCards((prev) => new Set(prev).add(idx));
             observer.unobserve(entry.target);
           }
         });
@@ -336,7 +338,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 return (
                   <div
                     key={scent.id}
-                    className={`pd-scent-card ${isSelected ? "selected" : ""}`}
+                    data-scent-idx={idx}
+                    className={`pd-scent-card ${isSelected ? "selected" : ""} ${visibleCards.has(idx) ? "visible" : ""}`}
                     style={{ transitionDelay: `${idx * 0.03}s` }}
                     onClick={() => toggleScent(scent.id)}
                   >
